@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { listFontAssets } from './fonts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -47,6 +48,7 @@ function createMainWindow(): BrowserWindow {
 function registerIpcHandlers(): void {
   ipcMain.handle('slidify:getVersion', () => app.getVersion());
   ipcMain.handle('slidify:getPlatform', () => process.platform);
+  ipcMain.handle('slidify:listFonts', () => listFontAssets());
 }
 
 void app.whenReady().then(() => {

@@ -17,7 +17,10 @@ describe('editorStore — reduce', () => {
   it('slide/select switches the selected slide when the id exists', () => {
     const state = {
       ...initialState,
-      slides: [{ id: 'slide-1' }, { id: 'slide-2' }],
+      slides: [
+        { id: 'slide-1', shapes: [] },
+        { id: 'slide-2', shapes: [] },
+      ],
     };
     const next = reduce(state, { type: 'slide/select', slideId: 'slide-2' });
     expect(next.selectedSlideId).toBe('slide-2');
