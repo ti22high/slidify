@@ -262,7 +262,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 10 — Presentation mode + Speaker notes
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Run the deck full-screen with a presenter view.
 - **Acceptance criteria:**
   - Fullscreen player at
