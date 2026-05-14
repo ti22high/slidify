@@ -1,5 +1,23 @@
 import { useEffect } from 'react';
-import { useEditorStore } from '../../store/editorStore';
+import { nextShapeId, useEditorStore } from '../../store/editorStore';
+import type { Shape } from '../../model/shape';
+
+const clipboard: { shapes: Shape[] } = { shapes: [] };
+
+function cloneShape(s: Shape): Shape {
+  return {
+    ...s,
+    id: nextShapeId(),
+    text: s.text ? { ...s.text } : undefined,
+    image: s.image ? { ...s.image } : undefined,
+    table: s.table
+      ? { ...s.table, cells: s.table.cells.map((r) => r.map((c) => ({ ...c }))) }
+      : undefined,
+    data: s.data ? { ...s.data } : undefined,
+    chart: s.chart ? { ...s.chart, series: s.chart.series.map((x) => ({ ...x })) } : undefined,
+    animations: s.animations ? s.animations.map((a) => ({ ...a })) : undefined,
+  };
+}
 
 function isEditableTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -52,6 +70,55 @@ export function useGlobalKeymap(): void {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'y') {
         e.preventDefault();
         state.dispatch({ type: 'redo' });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'c') {
+        if (selectedShapeIds.length === 0) return;
+        e.preventDefault();
+        const slide = slides.find((s) => s.id === selectedSlideId);
+        if (!slide) return;
+        clipboard.shapes = slide.shapes
+          .filter((s) => selectedShapeIds.includes(s.id))
+          .map((s) => ({ ...s }));
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'x') {
+        if (selectedShapeIds.length === 0) return;
+        e.preventDefault();
+        const slide = slides.find((s) => s.id === selectedSlideId);
+        if (!slide) return;
+        clipboard.shapes = slide.shapes
+          .filter((s) => selectedShapeIds.includes(s.id))
+          .map((s) => ({ ...s }));
+        state.dispatch({
+          type: 'shape/delete',
+          slideId: selectedSlideId,
+          shapeIds: selectedShapeIds,
+        });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'v') {
+        if (clipboard.shapes.length === 0) return;
+        e.preventDefault();
+        const newIds: string[] = [];
+        for (const s of clipboard.shapes) {
+          const c = cloneShape(s);
+          c.x = s.x + 200000;
+          c.y = s.y + 200000;
+          newIds.push(c.id);
+          state.dispatch({ type: 'shape/add', slideId: selectedSlideId, shape: c });
+        }
+        state.dispatch({ type: 'selection/set', shapeIds: newIds });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        const slide = slides.find((s) => s.id === selectedSlideId);
+        if (!slide) return;
+        state.dispatch({
+          type: 'selection/set',
+          shapeIds: slide.shapes.map((s) => s.id),
+        });
         return;
       }
       if (e.key === 'Delete' || e.key === 'Backspace') {

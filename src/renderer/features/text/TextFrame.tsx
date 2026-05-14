@@ -52,7 +52,12 @@ export function TextFrame({ shape, slideId }: Props): JSX.Element | null {
               dispatch({ type: 'text/edit/end' });
             }
           }}
-          onBlur={() => dispatch({ type: 'text/edit/end' })}
+          onBlur={(e) => {
+            // Keep edit mode alive if focus is moving to the floating toolbar.
+            const next = e.relatedTarget as Element | null;
+            if (next && next.closest('[data-text-toolbar="1"]')) return;
+            dispatch({ type: 'text/edit/end' });
+          }}
           style={{
             width: '100%',
             height: '100%',

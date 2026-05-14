@@ -101,8 +101,12 @@ export function SlideCanvas(): JSX.Element {
       dispatch({ type: 'selection/set', shapeIds: [shapeId] });
     }
     const startSvg = toSvgPoint(e.clientX, e.clientY);
+    // Read the live state after the dispatch above so newly-toggled ids are in
+    // the drag set.
+    const liveSelected = new Set(useEditorStore.getState().selectedShapeIds);
+    if (!liveSelected.has(shapeId)) liveSelected.add(shapeId);
     const startPositions = (slide?.shapes ?? [])
-      .filter((s) => selectedSet.has(s.id) || s.id === shapeId)
+      .filter((s) => liveSelected.has(s.id))
       .map((s) => ({ id: s.id, x: s.x, y: s.y }));
 
     const move = (ev: PointerEvent) => {
@@ -147,21 +151,25 @@ export function SlideCanvas(): JSX.Element {
       ? selectedShapes[0]
       : null;
 
-  const toolbarPos = useMemo(() => {
-    if (!toolbarShape || !svgRef.current) return null;
+  // Compute on every render — depends on DOM measurements (getScreenCTM /
+  // getBoundingClientRect) that aren't reactive, so memoising is unsound.
+  let toolbarPos: { left: number; top: number } | null = null;
+  if (toolbarShape && svgRef.current) {
     const svg = svgRef.current;
     const ctm = svg.getScreenCTM();
     const containerRect = svg.parentElement?.getBoundingClientRect();
-    if (!ctm || !containerRect) return null;
-    const pt = svg.createSVGPoint();
-    pt.x = toolbarShape.x + toolbarShape.w / 2;
-    pt.y = toolbarShape.y;
-    const screen = pt.matrixTransform(ctm);
-    return {
-      left: screen.x - containerRect.left,
-      top: screen.y - containerRect.top - 8,
-    };
-  }, [toolbarShape, zoom, slide]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (ctm && containerRect) {
+      const pt = svg.createSVGPoint();
+      pt.x = toolbarShape.x + toolbarShape.w / 2;
+      pt.y = toolbarShape.y;
+      const screen = pt.matrixTransform(ctm);
+      toolbarPos = {
+        left: screen.x - containerRect.left,
+        top: screen.y - containerRect.top - 8,
+      };
+    }
+  }
+  void zoom; // referenced so the render reflects zoom changes; positioning recomputes on render.
 
   if (!slide) {
     return <section aria-label="Slide canvas" className="h-full w-full bg-slate-300" />;
@@ -185,6 +193,11 @@ export function SlideCanvas(): JSX.Element {
           className="block"
           onPointerDown={onCanvasPointerDown}
         >
+          <defs>
+            <filter id="slide-shadow" x="-5%" y="-5%" width="110%" height="110%">
+              <feDropShadow dx="0" dy="50000" stdDeviation="40000" floodOpacity="0.25" />
+            </filter>
+          </defs>
           {/* Workspace background (light gray, fills the SVG viewport). */}
           <rect
             x={-WORKSPACE_MARGIN_EMU}
@@ -204,11 +217,6 @@ export function SlideCanvas(): JSX.Element {
             strokeWidth={6350}
             filter="url(#slide-shadow)"
           />
-          <defs>
-            <filter id="slide-shadow" x="-5%" y="-5%" width="110%" height="110%">
-              <feDropShadow dx="0" dy="50000" stdDeviation="40000" floodOpacity="0.25" />
-            </filter>
-          </defs>
           {/* Layout-level placeholder shapes (non-interactive in the editor). */}
           {(resolved?.shapes.slice(0, resolved.shapes.length - slide.shapes.length) ?? []).map(
             (shape) => (
