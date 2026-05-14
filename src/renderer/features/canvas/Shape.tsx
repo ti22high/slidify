@@ -126,8 +126,9 @@ export function Shape({
       break;
     }
     case 'table':
-    case 'data': {
-      // table -> rendered by Table.tsx via <foreignObject>; data -> by DataPreview.
+    case 'data':
+    case 'chart': {
+      // table -> Table.tsx; data -> DataPreview; chart -> Chart.tsx.
       // Stub a bounding box so selection/handles still work in SlideCanvas.
       body = (
         <rect
