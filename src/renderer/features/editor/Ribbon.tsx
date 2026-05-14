@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useT, useI18nStore } from '../../i18n';
 import { importXlsxIntoSlide } from '../data/importXlsx';
 import { insertImageFromFile } from '../media/ImageDrop';
-import { makeShape, makeTableShape, useEditorStore } from '../../store/editorStore';
+import { makeShape, makeTableShape, makeTextShape, useEditorStore } from '../../store/editorStore';
 import { useUiStore } from '../../store/uiStore';
 import { THEMES } from '../../themes';
 import { PRESET_NAMES, categoryOf, type PresetName } from '../presentation/presets';
@@ -60,6 +60,19 @@ export function Ribbon(): JSX.Element {
       <div className="flex flex-1 items-center gap-1 overflow-x-auto">
         {activeTab === 'insert' ? (
           <>
+            <button
+              type="button"
+              onClick={() =>
+                dispatch({
+                  type: 'shape/add',
+                  slideId: selectedSlideId,
+                  shape: makeTextShape(),
+                })
+              }
+              className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+            >
+              + {t('ribbon.insert.text')}
+            </button>
             {INSERT_BUTTONS.map((b) => (
               <button
                 key={b.kind}
