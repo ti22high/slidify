@@ -238,7 +238,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 9 — Animations and transitions
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #10](https://github.com/ti22high/slidify/pull/10) (engine + presets, Inspector wiring TODO)
 - **Goal:** Subset of Google Slides animation parity.
 - **Acceptance criteria:**
   - Web Animations API engine at
