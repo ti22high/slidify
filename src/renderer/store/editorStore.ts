@@ -39,6 +39,12 @@ export type Action =
   | { type: 'shape/add'; slideId: SlideId; shape: Shape }
   | { type: 'shape/update'; slideId: SlideId; shapeId: ShapeId; patch: Partial<Shape> }
   | { type: 'shape/delete'; slideId: SlideId; shapeIds: ShapeId[] }
+  | {
+      type: 'shape/zorder';
+      slideId: SlideId;
+      shapeIds: ShapeId[];
+      to: 'front' | 'back' | 'forward' | 'backward';
+    }
   | { type: 'selection/set'; shapeIds: ShapeId[] }
   | { type: 'selection/toggle'; shapeId: ShapeId }
   | { type: 'selection/clear' }
@@ -75,6 +81,7 @@ export function isDocumentMutating(action: Action): boolean {
     case 'shape/add':
     case 'shape/update':
     case 'shape/delete':
+    case 'shape/zorder':
     case 'text/update':
     case 'theme/apply':
     case 'shape/animation/add':
@@ -236,6 +243,38 @@ export function reduce(state: EditorState, action: Action): EditorState {
         const shape = slide?.shapes.find((s) => s.id === action.shapeId);
         if (shape) {
           Object.assign(shape, action.patch);
+        }
+        return;
+      }
+      case 'shape/zorder': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        const ids = new Set(action.shapeIds);
+        const moved = slide.shapes.filter((s) => ids.has(s.id));
+        const rest = slide.shapes.filter((s) => !ids.has(s.id));
+        if (moved.length === 0) return;
+        if (action.to === 'front') {
+          slide.shapes = [...rest, ...moved];
+        } else if (action.to === 'back') {
+          slide.shapes = [...moved, ...rest];
+        } else if (action.to === 'forward') {
+          // Shift each moved shape one slot toward the end.
+          const arr = slide.shapes.slice();
+          for (let i = arr.length - 2; i >= 0; i -= 1) {
+            if (ids.has(arr[i]!.id) && !ids.has(arr[i + 1]!.id)) {
+              [arr[i], arr[i + 1]] = [arr[i + 1]!, arr[i]!];
+            }
+          }
+          slide.shapes = arr;
+        } else {
+          // backward
+          const arr = slide.shapes.slice();
+          for (let i = 1; i < arr.length; i += 1) {
+            if (ids.has(arr[i]!.id) && !ids.has(arr[i - 1]!.id)) {
+              [arr[i], arr[i - 1]] = [arr[i - 1]!, arr[i]!];
+            }
+          }
+          slide.shapes = arr;
         }
         return;
       }

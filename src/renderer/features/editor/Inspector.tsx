@@ -40,10 +40,6 @@ export function Inspector(): JSX.Element {
                 placeholder={t('inspector.notesPlaceholder')}
                 onChange={(e) => {
                   if (!slide) return;
-                  // Notes are slide-scoped; mutate via the existing shape-less
-                  // path: dispatch a state/replace would nuke history. Instead
-                  // we use slide/* — but no such action exists for notes yet,
-                  // so we patch through the store directly.
                   useEditorStore.setState((s) => ({
                     slides: s.slides.map((sl) =>
                       sl.id === slide.id ? { ...sl, notes: e.target.value } : sl,
@@ -53,6 +49,32 @@ export function Inspector(): JSX.Element {
                 className="min-h-24 w-full resize-y rounded bg-slate-800 px-2 py-1.5 text-slate-100"
               />
             </div>
+            <label className="flex flex-col gap-0.5">
+              <span className="text-slate-500">{t('inspector.slideTransition')}</span>
+              <select
+                value={slide?.transition ?? 'none'}
+                onChange={(e) => {
+                  if (!slide) return;
+                  useEditorStore.setState((s) => ({
+                    slides: s.slides.map((sl) =>
+                      sl.id === slide.id
+                        ? {
+                            ...sl,
+                            transition: e.target.value as NonNullable<typeof sl.transition>,
+                          }
+                        : sl,
+                    ),
+                  }));
+                }}
+                className="rounded bg-slate-800 px-1.5 py-1 text-slate-100"
+              >
+                <option value="none">—</option>
+                <option value="fade">fade</option>
+                <option value="push">push</option>
+                <option value="wipe">wipe</option>
+                <option value="split">split</option>
+              </select>
+            </label>
           </div>
         ) : (
           <div className="flex flex-col gap-3 text-slate-300">
@@ -177,6 +199,45 @@ export function Inspector(): JSX.Element {
                     })
                   }
                   className="h-8 w-full cursor-pointer rounded bg-slate-800"
+                />
+              </label>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="flex flex-col gap-0.5">
+                <span className="text-slate-500">{t('inspector.strokeWidth')}</span>
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  value={(shape.strokeWidth / 12700).toFixed(1)}
+                  onChange={(e) =>
+                    dispatch({
+                      type: 'shape/update',
+                      slideId: selectedSlideId,
+                      shapeId: shape.id,
+                      patch: { strokeWidth: Math.max(0, Number(e.target.value)) * 12700 },
+                    })
+                  }
+                  className="rounded bg-slate-800 px-1.5 py-1 text-slate-100"
+                />
+              </label>
+              <label className="flex flex-col gap-0.5">
+                <span className="text-slate-500">{t('inspector.opacity')}</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={Math.round((shape.opacity ?? 1) * 100)}
+                  onChange={(e) =>
+                    dispatch({
+                      type: 'shape/update',
+                      slideId: selectedSlideId,
+                      shapeId: shape.id,
+                      patch: { opacity: Number(e.target.value) / 100 },
+                    })
+                  }
+                  className="h-7 cursor-pointer"
                 />
               </label>
             </div>

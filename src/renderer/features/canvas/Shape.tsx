@@ -150,6 +150,7 @@ export function Shape({
   return (
     <g
       transform={t}
+      opacity={shape.opacity ?? 1}
       onPointerDown={onPointerDown}
       onDoubleClick={onDoubleClick}
       style={{ cursor }}
