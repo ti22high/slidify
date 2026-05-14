@@ -238,7 +238,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 9 — Animations and transitions
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Subset of Google Slides animation parity.
 - **Acceptance criteria:**
   - Web Animations API engine at
