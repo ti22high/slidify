@@ -74,7 +74,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 2 — Shapes and text
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #3](https://github.com/ti22high/slidify/pull/3)
 - **Goal:** First-class shape primitives and editable text frames.
 - **Acceptance criteria:**
   - Primitives: rect, ellipse, line, arrow.
@@ -86,14 +86,14 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
   - Inter, Roboto, NotoSans loaded from `assets/fonts/` via the FontFace API at
     boot (renderer reads `file://` URL surfaced through preload).
 - **Subtasks:**
-  - [ ] `src/renderer/model/shape.ts` types (EMU geometry)
-  - [ ] `src/renderer/features/canvas/Shape.tsx` (svg renderer)
-  - [ ] `src/renderer/features/canvas/SelectionHandles.tsx`
-  - [ ] `src/renderer/features/canvas/Marquee.tsx`
-  - [ ] `src/renderer/features/text/TextFrame.tsx` (foreignObject)
-  - [ ] `src/renderer/features/text/TextToolbar.tsx`
-  - [ ] `src/renderer/features/text/fontLoader.ts` (FontFace registration)
-  - [ ] Tests for resize geometry math
+  - [x] `src/renderer/model/shape.ts` types (EMU geometry)
+  - [x] `src/renderer/features/canvas/Shape.tsx` (svg renderer)
+  - [x] `src/renderer/features/canvas/SelectionHandles.tsx`
+  - [x] `src/renderer/features/canvas/Marquee.tsx`
+  - [x] `src/renderer/features/text/TextFrame.tsx` (foreignObject)
+  - [x] `src/renderer/features/text/TextToolbar.tsx`
+  - [x] `src/renderer/features/text/fontLoader.ts` (FontFace registration)
+  - [x] Tests for resize geometry math
 - **Risks:** `<foreignObject>` scaling under zoom; rotation interaction with
   selection handles.
 
