@@ -101,7 +101,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 3 — Multi-slide
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** A deck of slides with reordering, layouts, and masters.
 - **Acceptance criteria:**
   - Add / delete / duplicate slides.
