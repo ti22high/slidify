@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+out
+release
+*.tsbuildinfo
+
+# Editor / OS
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Test / coverage
+coverage
+.nyc_output
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Electron artifacts
+electron-builder.lock
+*.exe
+*.dmg
+*.AppImage
+*.msi
+
+# Slidify session data (runtime, never committed)
+.slidify-sessions/
