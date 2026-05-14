@@ -262,7 +262,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 10 — Presentation mode + Speaker notes
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #11](https://github.com/ti22high/slidify/pull/11) (player + presenter overlay, multi-monitor scaffolded)
 - **Goal:** Run the deck full-screen with a presenter view.
 - **Acceptance criteria:**
   - Fullscreen player at
