@@ -191,7 +191,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 7 — PPTX import
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Read real-world PPTX files and reproduce them visually.
 - **Acceptance criteria:**
   - `src/main/pptx/reader.ts` using `jszip` + `fast-xml-parser`.
