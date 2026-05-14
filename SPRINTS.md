@@ -47,7 +47,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 1 — Editor shell
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Build the editor chrome around a single empty slide.
 - **Acceptance criteria:**
   - 16:9 SVG canvas (12192000 × 6858000 EMU `viewBox`) centred in the workspace.
