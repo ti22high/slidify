@@ -304,7 +304,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 12 — Themes + Polish
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Ship RC1.
 - **Acceptance criteria:**
   - 5–10 master themes (color scheme + font pair).
