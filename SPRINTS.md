@@ -74,7 +74,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 2 — Shapes and text
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** First-class shape primitives and editable text frames.
 - **Acceptance criteria:**
   - Primitives: rect, ellipse, line, arrow.
