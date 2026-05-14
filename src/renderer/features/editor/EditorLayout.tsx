@@ -4,9 +4,12 @@ import { SlideCanvas } from './SlideCanvas';
 import { StatusBar } from './StatusBar';
 import { ThumbnailSidebar } from './ThumbnailSidebar';
 import { useGlobalKeymap } from './keymap';
+import { useAutosaveBridge } from '../persistence/autosaveBridge';
+import { RecoveryDialog } from '../recovery/RecoveryDialog';
 
 export function EditorLayout(): JSX.Element {
   useGlobalKeymap();
+  useAutosaveBridge();
   return (
     <div
       className="grid h-full w-full bg-slate-950 text-slate-100"
@@ -35,6 +38,7 @@ export function EditorLayout(): JSX.Element {
       <div style={{ gridArea: 'status' }}>
         <StatusBar />
       </div>
+      <RecoveryDialog />
     </div>
   );
 }

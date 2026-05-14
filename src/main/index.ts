@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { listFontAssets } from './fonts';
+import { appendOp, flushAll } from './persistence/wal';
+import { clearCleanShutdownMarker, markCleanShutdown, writeSnapshot } from './persistence/snapshot';
+import { discardSession, loadSession, scanRecoverableSessions } from './persistence/recovery';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -45,10 +48,29 @@ function createMainWindow(): BrowserWindow {
   return window;
 }
 
+const activeDocIds = new Set<string>();
+
 function registerIpcHandlers(): void {
   ipcMain.handle('slidify:getVersion', () => app.getVersion());
   ipcMain.handle('slidify:getPlatform', () => process.platform);
   ipcMain.handle('slidify:listFonts', () => listFontAssets());
+
+  ipcMain.handle('slidify:autosave/append', async (_e, docId: string, op: unknown) => {
+    activeDocIds.add(docId);
+    await clearCleanShutdownMarker(docId);
+    await appendOp(docId, op);
+  });
+  ipcMain.handle('slidify:autosave/snapshot', async (_e, docId: string, state: unknown) => {
+    activeDocIds.add(docId);
+    await writeSnapshot(docId, state);
+  });
+  ipcMain.handle('slidify:autosave/markClean', async (_e, docId: string) => {
+    activeDocIds.add(docId);
+    await markCleanShutdown(docId);
+  });
+  ipcMain.handle('slidify:recovery/scan', () => scanRecoverableSessions());
+  ipcMain.handle('slidify:recovery/load', (_e, docId: string) => loadSession(docId));
+  ipcMain.handle('slidify:recovery/discard', (_e, docId: string) => discardSession(docId));
 }
 
 void app.whenReady().then(() => {
@@ -60,6 +82,18 @@ void app.whenReady().then(() => {
       createMainWindow();
     }
   });
+});
+
+app.on('before-quit', async (e) => {
+  if (activeDocIds.size === 0) return;
+  e.preventDefault();
+  try {
+    await flushAll();
+    await Promise.all(Array.from(activeDocIds).map(markCleanShutdown));
+  } finally {
+    activeDocIds.clear();
+    app.exit(0);
+  }
 });
 
 app.on('window-all-closed', () => {

@@ -44,6 +44,16 @@ export function useGlobalKeymap(): void {
         state.dispatch({ type: 'slide/duplicate', slideId: selectedSlideId });
         return;
       }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        state.dispatch({ type: e.shiftKey ? 'redo' : 'undo' });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        state.dispatch({ type: 'redo' });
+        return;
+      }
       if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault();
         if (selectedShapeIds.length > 0) {
