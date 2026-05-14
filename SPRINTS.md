@@ -144,7 +144,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 5 — Images and tables
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Embed images and basic tables; round-trip through `.slidify`.
 - **Acceptance criteria:**
   - Drag-drop image → copied to `media/` inside the doc, referenced as
