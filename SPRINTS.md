@@ -121,7 +121,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 4 — Undo/Redo + Autosave
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Lossless undo and crash-safe autosave.
 - **Acceptance criteria:**
   - Mutative snapshot stack capped at **200** steps.
