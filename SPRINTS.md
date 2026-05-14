@@ -191,7 +191,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 7 — PPTX import
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #8](https://github.com/ti22high/slidify/pull/8) (thin reader, visual-diff TODO)
 - **Goal:** Read real-world PPTX files and reproduce them visually.
 - **Acceptance criteria:**
   - `src/main/pptx/reader.ts` using `jszip` + `fast-xml-parser`.
