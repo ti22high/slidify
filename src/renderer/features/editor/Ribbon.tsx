@@ -62,13 +62,12 @@ export function Ribbon(): JSX.Element {
           <>
             <button
               type="button"
-              onClick={() =>
-                dispatch({
-                  type: 'shape/add',
-                  slideId: selectedSlideId,
-                  shape: makeTextShape(),
-                })
-              }
+              onClick={() => {
+                const shape = makeTextShape();
+                dispatch({ type: 'shape/add', slideId: selectedSlideId, shape });
+                // Drop the user straight into edit mode like Google Slides.
+                setTimeout(() => dispatch({ type: 'text/edit/start', shapeId: shape.id }), 0);
+              }}
               className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
             >
               + {t('ribbon.insert.text')}

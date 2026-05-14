@@ -11,7 +11,6 @@ import { resolveSlide } from '../slides/cascade';
 import { Table } from '../table/Table';
 import { registerBundledFonts } from '../text/fontLoader';
 import { TextFrame } from '../text/TextFrame';
-import { TextToolbar } from '../text/TextToolbar';
 import { useEditorStore } from '../../store/editorStore';
 
 const BASE_WIDTH_PX = 960;
@@ -143,34 +142,7 @@ export function SlideCanvas(): JSX.Element {
   const editingTextShape =
     editingShape && editingShape.kind !== 'table' && editingShape.text ? editingShape : null;
 
-  const toolbarShape =
-    selectedShapes.length === 1 &&
-    selectedShapes[0]?.text &&
-    selectedShapes[0].kind !== 'table' &&
-    selectedShapes[0].kind !== 'data' &&
-    selectedShapes[0].kind !== 'chart'
-      ? selectedShapes[0]
-      : null;
-
-  // Compute on every render — depends on DOM measurements (getScreenCTM /
-  // getBoundingClientRect) that aren't reactive, so memoising is unsound.
-  let toolbarPos: { left: number; top: number } | null = null;
-  if (toolbarShape && svgRef.current) {
-    const svg = svgRef.current;
-    const ctm = svg.getScreenCTM();
-    const containerRect = svg.parentElement?.getBoundingClientRect();
-    if (ctm && containerRect) {
-      const pt = svg.createSVGPoint();
-      pt.x = toolbarShape.x + toolbarShape.w / 2;
-      pt.y = toolbarShape.y;
-      const screen = pt.matrixTransform(ctm);
-      toolbarPos = {
-        left: screen.x - containerRect.left,
-        top: screen.y - containerRect.top - 8,
-      };
-    }
-  }
-  void zoom; // referenced so the render reflects zoom changes; positioning recomputes on render.
+  void zoom; // referenced so toolbar position re-evaluates if needed.
 
   if (!slide) {
     return <section aria-label="Slide canvas" className="h-full w-full bg-slate-300" />;
@@ -293,9 +265,6 @@ export function SlideCanvas(): JSX.Element {
           )}
           <Marquee rect={marquee} />
         </svg>
-        {toolbarShape && toolbarPos ? (
-          <TextToolbar shape={toolbarShape} slideId={slide.id} position={toolbarPos} />
-        ) : null}
       </div>
     </section>
   );

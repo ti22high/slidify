@@ -21,7 +21,7 @@ export function TextFrame({ shape, slideId }: Props): JSX.Element | null {
     el.focus();
     const range = document.createRange();
     range.selectNodeContents(el);
-    range.collapse(false);
+    // Select all so the first keystroke replaces a placeholder like "Текст".
     const sel = window.getSelection();
     sel?.removeAllRanges();
     sel?.addRange(range);

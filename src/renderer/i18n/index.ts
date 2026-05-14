@@ -53,6 +53,17 @@ const en: Strings = {
   'ctx.duplicate': 'Duplicate',
   'ctx.delete': 'Delete',
 
+  'format.bold': 'Bold (Cmd+B)',
+  'format.italic': 'Italic (Cmd+I)',
+  'format.underline': 'Underline (Cmd+U)',
+  'format.color': 'Text color',
+  'format.alignLeft': 'Align left',
+  'format.alignCenter': 'Align center',
+  'format.alignRight': 'Align right',
+  'format.fontFamily': 'Font',
+  'format.fontSize': 'Size',
+  'format.placeholder': 'Select a text frame to format it.',
+
   // status bar
   'status.saved': 'Saved {time}',
   'status.unsaved': 'Unsaved changes',
@@ -153,6 +164,17 @@ const ru: Strings = {
   'ctx.sendBack': 'На задний план',
   'ctx.duplicate': 'Дублировать',
   'ctx.delete': 'Удалить',
+
+  'format.bold': 'Полужирный (Cmd+B)',
+  'format.italic': 'Курсив (Cmd+I)',
+  'format.underline': 'Подчёркнутый (Cmd+U)',
+  'format.color': 'Цвет текста',
+  'format.alignLeft': 'По левому краю',
+  'format.alignCenter': 'По центру',
+  'format.alignRight': 'По правому краю',
+  'format.fontFamily': 'Шрифт',
+  'format.fontSize': 'Размер',
+  'format.placeholder': 'Выделите текст, чтобы форматировать.',
 
   // status bar
   'status.saved': 'Сохранено {time}',
