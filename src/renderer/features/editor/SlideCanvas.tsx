@@ -4,6 +4,7 @@ import { Marquee } from '../canvas/Marquee';
 import { Shape } from '../canvas/Shape';
 import { SelectionHandles } from '../canvas/SelectionHandles';
 import { shapesInMarquee, type Rect } from '../canvas/geometry';
+import { openContextMenu } from './ContextMenu';
 import { DataPreview } from '../data/DataPreview';
 import { ImageDropOverlay } from '../media/ImageDrop';
 import { resolveSlide } from '../slides/cascade';
@@ -192,6 +193,15 @@ export function SlideCanvas(): JSX.Element {
           preserveAspectRatio="xMidYMid meet"
           className="block"
           onPointerDown={onCanvasPointerDown}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            const target = (e.target as Element).closest('[data-shape-id]') as Element | null;
+            const id = target?.getAttribute('data-shape-id') ?? null;
+            if (id && !selectedSet.has(id)) {
+              dispatch({ type: 'selection/set', shapeIds: [id] });
+            }
+            openContextMenu(e.clientX, e.clientY, id);
+          }}
         >
           <defs>
             <filter id="slide-shadow" x="-5%" y="-5%" width="110%" height="110%">

@@ -121,6 +121,21 @@ export function useGlobalKeymap(): void {
         });
         return;
       }
+      if ((e.metaKey || e.ctrlKey) && (e.key === '=' || e.key === '+')) {
+        e.preventDefault();
+        state.dispatch({ type: 'zoom/set', value: state.zoom * 1.1 });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === '-') {
+        e.preventDefault();
+        state.dispatch({ type: 'zoom/set', value: state.zoom / 1.1 });
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === '0') {
+        e.preventDefault();
+        state.dispatch({ type: 'zoom/set', value: 1 });
+        return;
+      }
       if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault();
         if (selectedShapeIds.length > 0) {

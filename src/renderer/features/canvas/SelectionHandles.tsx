@@ -79,12 +79,14 @@ export function SelectionHandles({ shape, slideId, emuPerPixel }: Props): JSX.El
 
     const move = (ev: PointerEvent) => {
       const p = toSvg(ev.clientX, ev.clientY);
-      const angle = (Math.atan2(p.y - cy, p.x - cx) * 180) / Math.PI + 90;
+      let angle = (Math.atan2(p.y - cy, p.x - cx) * 180) / Math.PI + 90;
+      if (ev.shiftKey) angle = Math.round(angle / 15) * 15;
+      else angle = Math.round(angle);
       dispatch({
         type: 'shape/update',
         slideId,
         shapeId: shape.id,
-        patch: { rotation: Math.round(angle) },
+        patch: { rotation: angle },
       });
     };
     const up = () => {

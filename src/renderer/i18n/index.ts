@@ -41,6 +41,22 @@ const en: Strings = {
   'inspector.multi': '{count} shapes selected.',
   'inspector.notes': 'Speaker notes',
   'inspector.notesPlaceholder': 'Notes shown in presenter view…',
+  'inspector.strokeWidth': 'Stroke (pt)',
+  'inspector.opacity': 'Opacity',
+  'inspector.slideTransition': 'Slide transition',
+
+  // context menu
+  'ctx.bringFront': 'Bring to front',
+  'ctx.bringForward': 'Bring forward',
+  'ctx.sendBackward': 'Send backward',
+  'ctx.sendBack': 'Send to back',
+  'ctx.duplicate': 'Duplicate',
+  'ctx.delete': 'Delete',
+
+  // status bar
+  'status.saved': 'Saved {time}',
+  'status.unsaved': 'Unsaved changes',
+  'status.fileUntitled': 'Untitled',
   'inspector.type': 'Type',
   'inspector.xIn': 'X (in)',
   'inspector.yIn': 'Y (in)',
@@ -126,6 +142,22 @@ const ru: Strings = {
   'inspector.multi': 'Выделено объектов: {count}.',
   'inspector.notes': 'Заметки докладчика',
   'inspector.notesPlaceholder': 'Заметки видны в режиме докладчика…',
+  'inspector.strokeWidth': 'Толщина обводки (pt)',
+  'inspector.opacity': 'Прозрачность',
+  'inspector.slideTransition': 'Переход слайда',
+
+  // context menu
+  'ctx.bringFront': 'На передний план',
+  'ctx.bringForward': 'Переместить вперёд',
+  'ctx.sendBackward': 'Переместить назад',
+  'ctx.sendBack': 'На задний план',
+  'ctx.duplicate': 'Дублировать',
+  'ctx.delete': 'Удалить',
+
+  // status bar
+  'status.saved': 'Сохранено {time}',
+  'status.unsaved': 'Несохранённые изменения',
+  'status.fileUntitled': 'Без названия',
   'inspector.type': 'Тип',
   'inspector.xIn': 'X (дюйм)',
   'inspector.yIn': 'Y (дюйм)',

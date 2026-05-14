@@ -3,15 +3,17 @@ import { Ribbon } from './Ribbon';
 import { SlideCanvas } from './SlideCanvas';
 import { StatusBar } from './StatusBar';
 import { ThumbnailSidebar } from './ThumbnailSidebar';
+import { ContextMenu } from './ContextMenu';
 import { useGlobalKeymap } from './keymap';
 import { useAutosaveBridge } from '../persistence/autosaveBridge';
-import { useFileMenuCommands } from '../persistence/fileOps';
+import { useDirtyTracker, useFileMenuCommands } from '../persistence/fileOps';
 import { RecoveryDialog } from '../recovery/RecoveryDialog';
 
 export function EditorLayout(): JSX.Element {
   useGlobalKeymap();
   useAutosaveBridge();
   useFileMenuCommands();
+  useDirtyTracker();
   return (
     <div
       className="grid h-full w-full bg-slate-950 text-slate-100"
@@ -41,6 +43,7 @@ export function EditorLayout(): JSX.Element {
         <StatusBar />
       </div>
       <RecoveryDialog />
+      <ContextMenu />
     </div>
   );
 }

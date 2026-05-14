@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { SLIDE_HEIGHT_EMU, SLIDE_WIDTH_EMU } from '../../../shared/emu';
 import { nextShapeId, useEditorStore } from '../../store/editorStore';
 import type { Shape, ShapeId } from '../../model/shape';
+import { applyLoaded } from '../persistence/fileOps';
+import { unpackDocumentBytes } from '../persistence/unpackInRenderer';
 import { registerBlob } from './mediaCache';
 
 const ACCEPTED_MIMES = new Set([
@@ -90,7 +92,15 @@ export function ImageDropOverlay({ slideId }: Props): JSX.Element | null {
       if (!e.dataTransfer || e.dataTransfer.files.length === 0) return;
       e.preventDefault();
       for (const file of Array.from(e.dataTransfer.files)) {
-        void insertImageFromFile(file, slideId);
+        if (file.name.toLowerCase().endsWith('.slidify')) {
+          void file
+            .arrayBuffer()
+            .then(unpackDocumentBytes)
+            .then((doc) => applyLoaded(null, doc.state, doc.media))
+            .catch((err) => console.error('Slidify open failed:', err));
+        } else {
+          void insertImageFromFile(file, slideId);
+        }
       }
     };
     window.addEventListener('dragover', onDragOver);

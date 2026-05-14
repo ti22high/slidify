@@ -74,6 +74,8 @@ export interface Shape {
   fill: string;
   stroke: string;
   strokeWidth: Emu;
+  /** 0..1 — applied as SVG `opacity` on the rendered <g>. Default = 1. */
+  opacity?: number;
   text?: TextBody;
   image?: ImagePayload;
   table?: TablePayload;
