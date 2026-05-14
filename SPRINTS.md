@@ -220,7 +220,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 8 — PPTX export
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #9](https://github.com/ti22high/slidify/pull/9) (mirrors Sprint 7 reader)
 - **Goal:** Write PPTX that round-trips losslessly through Sprint 7.
 - **Acceptance criteria:**
   - `src/main/pptx/writer.ts` mirroring Sprint 7's schema.
