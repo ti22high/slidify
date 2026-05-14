@@ -1,6 +1,8 @@
+import { useT } from '../../i18n';
 import { MAX_ZOOM, MIN_ZOOM, useEditorStore } from '../../store/editorStore';
 
 export function StatusBar(): JSX.Element {
+  const t = useT();
   const slides = useEditorStore((s) => s.slides);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const zoom = useEditorStore((s) => s.zoom);
@@ -13,11 +15,9 @@ export function StatusBar(): JSX.Element {
 
   return (
     <footer className="flex h-8 items-center justify-between border-t border-slate-800 bg-slate-900/80 px-3 text-xs text-slate-400">
-      <span>
-        Slide {currentIndex + 1} / {slides.length}
-      </span>
+      <span>{t('status.slideOf', { n: currentIndex + 1, total: slides.length })}</span>
       <label className="flex items-center gap-2">
-        <span className="text-slate-500">Zoom</span>
+        <span className="text-slate-500">{t('status.zoom')}</span>
         <input
           type="range"
           min={MIN_ZOOM * 100}

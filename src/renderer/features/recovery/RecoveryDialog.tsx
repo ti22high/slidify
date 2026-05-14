@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useT } from '../../i18n';
 import type { Action, EditorState } from '../../store/editorStore';
 import { initialState, reduce, useEditorStore } from '../../store/editorStore';
 import type { RecoverableSessionInfo } from '../../../shared/ipc';
@@ -16,6 +17,7 @@ function replayOps(snapshotState: unknown | null, ops: { action: unknown }[]): E
 }
 
 export function RecoveryDialog(): JSX.Element | null {
+  const t = useT();
   const [sessions, setSessions] = useState<RecoverableSessionInfo[] | null>(null);
   const dispatch = useEditorStore((s) => s.dispatch);
 
@@ -46,11 +48,8 @@ export function RecoveryDialog(): JSX.Element | null {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80">
       <div className="w-[480px] rounded-lg border border-slate-700 bg-slate-900 p-5 text-sm text-slate-200 shadow-2xl">
-        <h2 className="text-base font-semibold text-slate-100">Restore unsaved changes?</h2>
-        <p className="mt-1 text-xs text-slate-400">
-          Slidify found {sessions.length} session{sessions.length === 1 ? '' : 's'} that did not
-          shut down cleanly. Restore to continue where you left off, or discard the recovery data.
-        </p>
+        <h2 className="text-base font-semibold text-slate-100">{t('recovery.title')}</h2>
+        <p className="mt-1 text-xs text-slate-400">{t('recovery.body', { n: sessions.length })}</p>
         <ul className="mt-3 flex flex-col gap-2">
           {sessions.map((s) => (
             <li
@@ -60,7 +59,7 @@ export function RecoveryDialog(): JSX.Element | null {
               <div>
                 <div className="font-mono text-xs text-slate-300">{s.docId}</div>
                 <div className="text-xs text-slate-500">
-                  {s.ops} op{s.ops === 1 ? '' : 's'} · {new Date(s.walMtime).toLocaleString()}
+                  {t('recovery.ops', { n: s.ops })} · {new Date(s.walMtime).toLocaleString()}
                 </div>
               </div>
               <div className="flex gap-1">
@@ -69,14 +68,14 @@ export function RecoveryDialog(): JSX.Element | null {
                   onClick={() => void restore(s)}
                   className="rounded bg-sky-600 px-2 py-1 text-xs text-white hover:bg-sky-500"
                 >
-                  Restore
+                  {t('recovery.restore')}
                 </button>
                 <button
                   type="button"
                   onClick={() => void discard(s)}
                   className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300 hover:bg-slate-800"
                 >
-                  Discard
+                  {t('recovery.discard')}
                 </button>
               </div>
             </li>

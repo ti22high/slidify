@@ -1,9 +1,11 @@
 import { EMU_PER_INCH } from '../../../shared/emu';
+import { useT } from '../../i18n';
 import { useEditorStore } from '../../store/editorStore';
 
 const emuToIn = (v: number): string => (v / EMU_PER_INCH).toFixed(2);
 
 export function Inspector(): JSX.Element {
+  const t = useT();
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const slides = useEditorStore((s) => s.slides);
   const selectedShapeIds = useEditorStore((s) => s.selectedShapeIds);
@@ -21,24 +23,24 @@ export function Inspector(): JSX.Element {
       className="flex h-full w-[280px] flex-col border-l border-slate-800 bg-slate-900/60"
     >
       <header className="h-9 border-b border-slate-800 px-3 text-xs font-semibold uppercase tracking-wider leading-9 text-slate-400">
-        Inspector
+        {t('inspector.title')}
       </header>
       <div className="flex-1 overflow-y-auto p-3 text-xs">
         {!shape ? (
           <p className="text-slate-500">
             {selectedShapeIds.length > 1
-              ? `${selectedShapeIds.length} shapes selected.`
-              : 'Select something on the slide to edit its properties.'}
+              ? t('inspector.multi', { count: selectedShapeIds.length })
+              : t('inspector.empty')}
           </p>
         ) : (
           <div className="flex flex-col gap-3 text-slate-300">
             <div>
-              <div className="mb-1 text-slate-500">Type</div>
+              <div className="mb-1 text-slate-500">{t('inspector.type')}</div>
               <div className="capitalize text-slate-100">{shape.kind}</div>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">X (in)</span>
+                <span className="text-slate-500">{t('inspector.xIn')}</span>
                 <input
                   type="number"
                   step="0.1"
@@ -55,7 +57,7 @@ export function Inspector(): JSX.Element {
                 />
               </label>
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">Y (in)</span>
+                <span className="text-slate-500">{t('inspector.yIn')}</span>
                 <input
                   type="number"
                   step="0.1"
@@ -72,7 +74,7 @@ export function Inspector(): JSX.Element {
                 />
               </label>
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">W (in)</span>
+                <span className="text-slate-500">{t('inspector.wIn')}</span>
                 <input
                   type="number"
                   step="0.1"
@@ -89,7 +91,7 @@ export function Inspector(): JSX.Element {
                 />
               </label>
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">H (in)</span>
+                <span className="text-slate-500">{t('inspector.hIn')}</span>
                 <input
                   type="number"
                   step="0.1"
@@ -106,7 +108,7 @@ export function Inspector(): JSX.Element {
                 />
               </label>
               <label className="col-span-2 flex flex-col gap-0.5">
-                <span className="text-slate-500">Rotation (°)</span>
+                <span className="text-slate-500">{t('inspector.rotation')}</span>
                 <input
                   type="number"
                   value={shape.rotation}
@@ -124,7 +126,7 @@ export function Inspector(): JSX.Element {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">Fill</span>
+                <span className="text-slate-500">{t('inspector.fill')}</span>
                 <input
                   type="color"
                   value={shape.fill === 'none' ? '#ffffff' : shape.fill}
@@ -140,7 +142,7 @@ export function Inspector(): JSX.Element {
                 />
               </label>
               <label className="flex flex-col gap-0.5">
-                <span className="text-slate-500">Stroke</span>
+                <span className="text-slate-500">{t('inspector.stroke')}</span>
                 <input
                   type="color"
                   value={shape.stroke}
@@ -167,7 +169,7 @@ export function Inspector(): JSX.Element {
               }
               className="mt-2 rounded border border-rose-700 bg-rose-900/40 px-2 py-1 text-rose-200 hover:bg-rose-900/60"
             >
-              Delete shape
+              {t('inspector.delete')}
             </button>
           </div>
         )}
