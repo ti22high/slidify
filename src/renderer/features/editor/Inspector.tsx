@@ -27,11 +27,33 @@ export function Inspector(): JSX.Element {
       </header>
       <div className="flex-1 overflow-y-auto p-3 text-xs">
         {!shape ? (
-          <p className="text-slate-500">
-            {selectedShapeIds.length > 1
-              ? t('inspector.multi', { count: selectedShapeIds.length })
-              : t('inspector.empty')}
-          </p>
+          <div className="flex flex-col gap-3">
+            <p className="text-slate-500">
+              {selectedShapeIds.length > 1
+                ? t('inspector.multi', { count: selectedShapeIds.length })
+                : t('inspector.empty')}
+            </p>
+            <div>
+              <div className="mb-1 text-slate-500">{t('inspector.notes')}</div>
+              <textarea
+                value={slide?.notes ?? ''}
+                placeholder={t('inspector.notesPlaceholder')}
+                onChange={(e) => {
+                  if (!slide) return;
+                  // Notes are slide-scoped; mutate via the existing shape-less
+                  // path: dispatch a state/replace would nuke history. Instead
+                  // we use slide/* — but no such action exists for notes yet,
+                  // so we patch through the store directly.
+                  useEditorStore.setState((s) => ({
+                    slides: s.slides.map((sl) =>
+                      sl.id === slide.id ? { ...sl, notes: e.target.value } : sl,
+                    ),
+                  }));
+                }}
+                className="min-h-24 w-full resize-y rounded bg-slate-800 px-2 py-1.5 text-slate-100"
+              />
+            </div>
+          </div>
         ) : (
           <div className="flex flex-col gap-3 text-slate-300">
             <div>

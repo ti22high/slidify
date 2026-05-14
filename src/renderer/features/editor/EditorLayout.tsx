@@ -5,11 +5,13 @@ import { StatusBar } from './StatusBar';
 import { ThumbnailSidebar } from './ThumbnailSidebar';
 import { useGlobalKeymap } from './keymap';
 import { useAutosaveBridge } from '../persistence/autosaveBridge';
+import { useFileMenuCommands } from '../persistence/fileOps';
 import { RecoveryDialog } from '../recovery/RecoveryDialog';
 
 export function EditorLayout(): JSX.Element {
   useGlobalKeymap();
   useAutosaveBridge();
+  useFileMenuCommands();
   return (
     <div
       className="grid h-full w-full bg-slate-950 text-slate-100"

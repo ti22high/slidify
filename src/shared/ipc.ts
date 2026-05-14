@@ -33,6 +33,22 @@ export interface XlsxImportResult {
   dataRef: string;
 }
 
+export interface SaveDocArgs {
+  targetPath: string | null;
+  state: unknown;
+  media: { mediaRef: string; bytes: ArrayBuffer; mime: string }[];
+}
+
+export interface SaveDocResult {
+  path: string;
+}
+
+export interface OpenDocResult {
+  path: string;
+  state: unknown;
+  media: { mediaRef: string; bytes: ArrayBuffer; mime: string }[];
+}
+
 export interface SlidifyApi {
   getVersion: () => Promise<string>;
   getPlatform: () => Promise<NodeJS.Platform>;
@@ -44,6 +60,9 @@ export interface SlidifyApi {
   recoveryLoad: (docId: string) => Promise<RecoveredSessionPayload>;
   recoveryDiscard: (docId: string) => Promise<void>;
   xlsxPickAndImport: (sheet?: string) => Promise<XlsxImportResult | null>;
+  saveDoc: (args: SaveDocArgs) => Promise<SaveDocResult | null>;
+  openDoc: () => Promise<OpenDocResult | null>;
+  onMenuCommand: (handler: (cmd: 'new' | 'open' | 'save' | 'saveAs') => void) => () => void;
 }
 
 declare global {

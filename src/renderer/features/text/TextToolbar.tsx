@@ -23,8 +23,16 @@ export function TextToolbar({ shape, slideId, position }: Props): JSX.Element | 
     <div
       role="toolbar"
       aria-label="Text formatting"
+      data-text-toolbar="1"
+      tabIndex={-1}
       onPointerDown={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.preventDefault()}
+      onMouseDown={(e) => {
+        // Only prevent default for non-form controls so selects / inputs still receive focus.
+        const target = e.target as HTMLElement;
+        if (target.tagName !== 'SELECT' && target.tagName !== 'INPUT') {
+          e.preventDefault();
+        }
+      }}
       className="pointer-events-auto flex items-center gap-1 rounded-md border border-slate-700 bg-slate-900/95 px-2 py-1 text-xs text-slate-200 shadow-lg backdrop-blur"
       style={{
         position: 'absolute',

@@ -14,6 +14,25 @@ const api: SlidifyApi = {
   recoveryLoad: (docId: string) => ipcRenderer.invoke('slidify:recovery/load', docId),
   recoveryDiscard: (docId: string) => ipcRenderer.invoke('slidify:recovery/discard', docId),
   xlsxPickAndImport: (sheet?: string) => ipcRenderer.invoke('slidify:xlsx/pickAndImport', sheet),
+  saveDoc: (args) => ipcRenderer.invoke('slidify:file/save', args),
+  openDoc: () => ipcRenderer.invoke('slidify:file/open'),
+  onMenuCommand: (handler) => {
+    const map: Record<string, 'new' | 'open' | 'save' | 'saveAs'> = {
+      'slidify:menu/new': 'new',
+      'slidify:menu/open': 'open',
+      'slidify:menu/save': 'save',
+      'slidify:menu/saveAs': 'saveAs',
+    };
+    const channels = Object.keys(map);
+    const wrapped: Record<string, (...args: unknown[]) => void> = {};
+    for (const ch of channels) {
+      wrapped[ch] = () => handler(map[ch]!);
+      ipcRenderer.on(ch, wrapped[ch]!);
+    }
+    return () => {
+      for (const ch of channels) ipcRenderer.removeListener(ch, wrapped[ch]!);
+    };
+  },
 };
 
 contextBridge.exposeInMainWorld('slidify', api);
