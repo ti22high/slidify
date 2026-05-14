@@ -4,6 +4,7 @@ import { Marquee } from '../canvas/Marquee';
 import { Shape } from '../canvas/Shape';
 import { SelectionHandles } from '../canvas/SelectionHandles';
 import { shapesInMarquee, type Rect } from '../canvas/geometry';
+import { resolveSlide } from '../slides/cascade';
 import { registerBundledFonts } from '../text/fontLoader';
 import { TextFrame } from '../text/TextFrame';
 import { TextToolbar } from '../text/TextToolbar';
@@ -14,6 +15,8 @@ const ASPECT = SLIDE_HEIGHT_EMU / SLIDE_WIDTH_EMU;
 
 export function SlideCanvas(): JSX.Element {
   const slides = useEditorStore((s) => s.slides);
+  const layouts = useEditorStore((s) => s.layouts);
+  const masters = useEditorStore((s) => s.masters);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const selectedShapeIds = useEditorStore((s) => s.selectedShapeIds);
   const editingShapeId = useEditorStore((s) => s.editingShapeId);
@@ -27,6 +30,10 @@ export function SlideCanvas(): JSX.Element {
   }, []);
 
   const slide = slides.find((s) => s.id === selectedSlideId);
+  const resolved = useMemo(
+    () => (slide ? resolveSlide(slide, layouts, masters) : null),
+    [slide, layouts, masters],
+  );
   const widthPx = BASE_WIDTH_PX * zoom;
   const heightPx = widthPx * ASPECT;
   const emuPerPixel = SLIDE_WIDTH_EMU / widthPx;
@@ -158,7 +165,17 @@ export function SlideCanvas(): JSX.Element {
           className="bg-white shadow-2xl ring-1 ring-slate-700"
           onPointerDown={onCanvasPointerDown}
         >
-          <rect width={SLIDE_WIDTH_EMU} height={SLIDE_HEIGHT_EMU} fill="#ffffff" />
+          <rect
+            width={SLIDE_WIDTH_EMU}
+            height={SLIDE_HEIGHT_EMU}
+            fill={resolved?.background ?? '#ffffff'}
+          />
+          {/* Layout-level placeholder shapes (non-interactive in the editor). */}
+          {(resolved?.shapes.slice(0, resolved.shapes.length - slide.shapes.length) ?? []).map(
+            (shape) => (
+              <Shape key={`layout-${shape.id}`} shape={shape} selected={false} editing={false} />
+            ),
+          )}
           {slide.shapes.map((shape) => (
             <Shape
               key={shape.id}

@@ -3,8 +3,10 @@ import { Ribbon } from './Ribbon';
 import { SlideCanvas } from './SlideCanvas';
 import { StatusBar } from './StatusBar';
 import { ThumbnailSidebar } from './ThumbnailSidebar';
+import { useGlobalKeymap } from './keymap';
 
 export function EditorLayout(): JSX.Element {
+  useGlobalKeymap();
   return (
     <div
       className="grid h-full w-full bg-slate-950 text-slate-100"

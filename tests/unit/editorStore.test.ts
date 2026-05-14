@@ -18,8 +18,8 @@ describe('editorStore — reduce', () => {
     const state = {
       ...initialState,
       slides: [
-        { id: 'slide-1', shapes: [] },
-        { id: 'slide-2', shapes: [] },
+        { id: 'slide-1', layoutId: 'layout-blank', shapes: [] },
+        { id: 'slide-2', layoutId: 'layout-blank', shapes: [] },
       ],
     };
     const next = reduce(state, { type: 'slide/select', slideId: 'slide-2' });

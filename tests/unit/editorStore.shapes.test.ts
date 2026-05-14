@@ -142,8 +142,8 @@ describe('slide/select clears selection and editing', () => {
     const twoSlides = {
       ...initialState,
       slides: [
-        { id: 'slide-1', shapes: [makeRect('a')] },
-        { id: 'slide-2', shapes: [] },
+        { id: 'slide-1', layoutId: 'layout-blank', shapes: [makeRect('a')] },
+        { id: 'slide-2', layoutId: 'layout-blank', shapes: [] },
       ],
       selectedShapeIds: ['a'],
       editingShapeId: 'a',
