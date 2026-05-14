@@ -8,4 +8,8 @@ export interface Slide {
   name?: string;
   layoutId: LayoutId;
   shapes: Shape[];
+  /** Speaker notes shown in the presenter view. */
+  notes?: string;
+  /** Slide transition kind (Sprint 9 engine). */
+  transition?: 'none' | 'fade' | 'push' | 'wipe' | 'split';
 }
