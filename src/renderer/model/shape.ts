@@ -1,7 +1,15 @@
 import type { Emu } from '../../shared/emu';
 
 export type ShapeId = string;
-export type ShapeKind = 'rect' | 'ellipse' | 'line' | 'arrow' | 'image' | 'table' | 'data';
+export type ShapeKind =
+  | 'rect'
+  | 'ellipse'
+  | 'line'
+  | 'arrow'
+  | 'image'
+  | 'table'
+  | 'data'
+  | 'chart';
 export type TextAlign = 'left' | 'center' | 'right';
 
 export interface TextBody {
@@ -64,6 +72,7 @@ export interface Shape {
   image?: ImagePayload;
   table?: TablePayload;
   data?: DataPayload;
+  chart?: import('./chart').ChartPayload;
 }
 
 export const DEFAULT_TEXT_BODY: TextBody = {

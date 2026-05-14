@@ -283,7 +283,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 11 — PDF export + Charts
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #12](https://github.com/ti22high/slidify/pull/12)
 - **Goal:** Native PDF export + first-class chart primitives.
 - **Acceptance criteria:**
   - `webContents.printToPDF()` invoked from the main process on a hidden
