@@ -165,7 +165,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 6 — XLSX streaming import
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #7](https://github.com/ti22high/slidify/pull/7) (ExcelJS fallback; calamine TODO)
 - **Goal:** Import very large XLSX (≥100k rows) without freezing the UI.
 - **Acceptance criteria:**
   - napi-rs binding around the `calamine` Rust crate in `native/`.
@@ -179,12 +179,12 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
   - Fallback (documented): if napi-rs is blocked for >1 day, use ExcelJS
     streaming with `TODO(sprint-6-calamine)` markers.
 - **Subtasks:**
-  - [ ] `native/` Rust crate + napi-rs wiring
-  - [ ] `src/main/xlsx/calamine-reader.ts` IPC bridge
-  - [ ] `src/renderer/store/dataStore.ts`
-  - [ ] `src/renderer/features/data/DataPreview.tsx` (first 50 rows + summary)
-  - [ ] `tests/fixtures/xlsx-100k.xlsx`
-  - [ ] `tests/integration/xlsx-stream.test.ts` (perf gate)
+  - [ ] `native/` Rust crate + napi-rs wiring — **deferred** (fallback)
+  - [x] `src/main/xlsx/xlsxReader.ts` (ExcelJS streaming, TODO marker)
+  - [x] `src/renderer/store/dataStore.ts` + TanStack Virtual view
+  - [x] `src/renderer/features/data/DataPreview.tsx` (first 50 rows + summary)
+  - [x] `tests/fixtures/small.xlsx` (perf-gate fixture pending calamine swap)
+  - [x] `tests/unit/xlsxReader.test.ts` + `dataStore.test.ts`
 - **Risks:** napi-rs cross-compilation for Windows from macOS CI; build time.
 
 ---

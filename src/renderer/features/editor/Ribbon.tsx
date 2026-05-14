@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { importXlsxIntoSlide } from '../data/importXlsx';
 import { insertImageFromFile } from '../media/ImageDrop';
 import { makeShape, makeTableShape, useEditorStore } from '../../store/editorStore';
 
@@ -80,6 +81,13 @@ export function Ribbon(): JSX.Element {
             className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
           >
             + Image…
+          </button>
+          <button
+            type="button"
+            onClick={() => void importXlsxIntoSlide(selectedSlideId)}
+            className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+          >
+            + XLSX…
           </button>
           <input
             ref={fileInputRef}

@@ -1,10 +1,12 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { listFontAssets } from './fonts';
 import { appendOp, flushAll } from './persistence/wal';
 import { clearCleanShutdownMarker, markCleanShutdown, writeSnapshot } from './persistence/snapshot';
 import { discardSession, loadSession, scanRecoverableSessions } from './persistence/recovery';
+import { readAllRows } from './xlsx/xlsxReader';
+import type { XlsxImportResult } from '../shared/ipc';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -71,6 +73,29 @@ function registerIpcHandlers(): void {
   ipcMain.handle('slidify:recovery/scan', () => scanRecoverableSessions());
   ipcMain.handle('slidify:recovery/load', (_e, docId: string) => loadSession(docId));
   ipcMain.handle('slidify:recovery/discard', (_e, docId: string) => discardSession(docId));
+
+  ipcMain.handle(
+    'slidify:xlsx/pickAndImport',
+    async (_e, sheet?: string): Promise<XlsxImportResult | null> => {
+      const result = await dialog.showOpenDialog({
+        title: 'Import XLSX',
+        properties: ['openFile'],
+        filters: [{ name: 'Excel', extensions: ['xlsx', 'xlsm'] }],
+      });
+      if (result.canceled || result.filePaths.length === 0) return null;
+      const filePath = result.filePaths[0]!;
+      const rows = await readAllRows(filePath, sheet);
+      const [header, ...rest] = rows;
+      const headers = (header ?? []).map((h) => (h === null ? '' : String(h)));
+      return {
+        sheetNames: [sheet ?? 'Sheet1'],
+        sheetName: sheet ?? 'Sheet1',
+        headers,
+        rows: rest,
+        dataRef: `data/${basename(filePath)}`,
+      };
+    },
+  );
 }
 
 void app.whenReady().then(() => {

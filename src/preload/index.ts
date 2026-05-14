@@ -13,6 +13,7 @@ const api: SlidifyApi = {
   recoveryScan: () => ipcRenderer.invoke('slidify:recovery/scan'),
   recoveryLoad: (docId: string) => ipcRenderer.invoke('slidify:recovery/load', docId),
   recoveryDiscard: (docId: string) => ipcRenderer.invoke('slidify:recovery/discard', docId),
+  xlsxPickAndImport: (sheet?: string) => ipcRenderer.invoke('slidify:xlsx/pickAndImport', sheet),
 };
 
 contextBridge.exposeInMainWorld('slidify', api);

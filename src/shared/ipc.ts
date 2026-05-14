@@ -22,6 +22,17 @@ export interface RecoveredSessionPayload {
   ops: PersistedOp[];
 }
 
+export type XlsxCellValue = string | number | boolean | null;
+
+export interface XlsxImportResult {
+  sheetNames: string[];
+  sheetName: string;
+  headers: string[];
+  rows: XlsxCellValue[][];
+  /** Path inside the future .slidify ZIP (`data/<basename>`). */
+  dataRef: string;
+}
+
 export interface SlidifyApi {
   getVersion: () => Promise<string>;
   getPlatform: () => Promise<NodeJS.Platform>;
@@ -32,6 +43,7 @@ export interface SlidifyApi {
   recoveryScan: () => Promise<RecoverableSessionInfo[]>;
   recoveryLoad: (docId: string) => Promise<RecoveredSessionPayload>;
   recoveryDiscard: (docId: string) => Promise<void>;
+  xlsxPickAndImport: (sheet?: string) => Promise<XlsxImportResult | null>;
 }
 
 declare global {

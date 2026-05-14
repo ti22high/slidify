@@ -4,6 +4,7 @@ import { Marquee } from '../canvas/Marquee';
 import { Shape } from '../canvas/Shape';
 import { SelectionHandles } from '../canvas/SelectionHandles';
 import { shapesInMarquee, type Rect } from '../canvas/geometry';
+import { DataPreview } from '../data/DataPreview';
 import { ImageDropOverlay } from '../media/ImageDrop';
 import { resolveSlide } from '../slides/cascade';
 import { Table } from '../table/Table';
@@ -183,17 +184,43 @@ export function SlideCanvas(): JSX.Element {
               <Shape key={`layout-${shape.id}`} shape={shape} selected={false} editing={false} />
             ),
           )}
-          {slide.shapes.map((shape) =>
-            shape.kind === 'table' ? (
-              <g
-                key={shape.id}
-                onPointerDown={beginDragShape(shape.id)}
-                onDoubleClick={onShapeDoubleClick(shape.id)}
-                data-shape-id={shape.id}
-              >
-                <Table shape={shape} slideId={slide.id} editable={editingShapeId === shape.id} />
-              </g>
-            ) : (
+          {slide.shapes.map((shape) => {
+            if (shape.kind === 'table') {
+              return (
+                <g
+                  key={shape.id}
+                  onPointerDown={beginDragShape(shape.id)}
+                  onDoubleClick={onShapeDoubleClick(shape.id)}
+                  data-shape-id={shape.id}
+                >
+                  <Table shape={shape} slideId={slide.id} editable={editingShapeId === shape.id} />
+                </g>
+              );
+            }
+            if (shape.kind === 'data' && shape.data) {
+              return (
+                <g key={shape.id} onPointerDown={beginDragShape(shape.id)} data-shape-id={shape.id}>
+                  <foreignObject x={shape.x} y={shape.y} width={shape.w} height={shape.h}>
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        background: '#0f172a',
+                        border: '1px solid #334155',
+                        borderRadius: 4,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <DataPreview
+                        datasetId={shape.data.datasetId}
+                        rowLimit={shape.data.rowLimit}
+                      />
+                    </div>
+                  </foreignObject>
+                </g>
+              );
+            }
+            return (
               <Shape
                 key={shape.id}
                 shape={shape}
@@ -202,8 +229,8 @@ export function SlideCanvas(): JSX.Element {
                 onPointerDown={beginDragShape(shape.id)}
                 onDoubleClick={onShapeDoubleClick(shape.id)}
               />
-            ),
-          )}
+            );
+          })}
           {editingTextShape ? <TextFrame shape={editingTextShape} slideId={slide.id} /> : null}
           {selectedShapes.map((shape) =>
             editingShapeId === shape.id ? null : (
