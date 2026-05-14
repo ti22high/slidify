@@ -1,0 +1,36 @@
+{
+  "appId": "com.slidify.app",
+  "productName": "Slidify",
+  "asar": true,
+  "directories": {
+    "buildResources": "assets",
+    "output": "release"
+  },
+  "files": ["out/**/*", "package.json"],
+  "extraResources": [
+    {
+      "from": "assets/fonts",
+      "to": "fonts",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/icons/icon.ico",
+    "artifactName": "Slidify-${version}.exe"
+  },
+  "portable": {
+    "artifactName": "Slidify-${version}.exe"
+  },
+  "mac": {
+    "target": "dmg",
+    "icon": "assets/icons/icon.icns",
+    "artifactName": "Slidify-${version}.dmg"
+  },
+  "publish": null
+}

@@ -1,0 +1,50 @@
+{
+  "name": "slidify",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Offline desktop clone of Google Slides, distributed as a portable Windows .exe.",
+  "author": "Slidify",
+  "license": "UNLICENSED",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "build:win": "electron-vite build && electron-builder --win --config electron-builder.json",
+    "build:mac": "electron-vite build && electron-builder --mac --config electron-builder.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "lint": "eslint . --ext .ts,.tsx,.cts,.mts --max-warnings 0 && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0",
+    "mutative": "1.0.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zustand": "4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@typescript-eslint/eslint-plugin": "7.18.0",
+    "@typescript-eslint/parser": "7.18.0",
+    "@vitejs/plugin-react": "4.3.1",
+    "autoprefixer": "10.4.19",
+    "electron": "32.0.1",
+    "electron-builder": "24.13.3",
+    "electron-vite": "2.3.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react": "7.34.3",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "jsdom": "24.1.0",
+    "postcss": "8.4.39",
+    "prettier": "3.3.2",
+    "tailwindcss": "3.4.4",
+    "typescript": "5.5.3",
+    "vite": "5.3.3",
+    "vitest": "1.6.0"
+  },
+  "packageManager": "pnpm@10.33.0"
+}
