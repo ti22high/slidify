@@ -1,4 +1,5 @@
 import { SLIDE_HEIGHT_EMU, SLIDE_WIDTH_EMU } from '../../../shared/emu';
+import { Shape } from '../canvas/Shape';
 import { useEditorStore } from '../../store/editorStore';
 
 export function ThumbnailSidebar(): JSX.Element {
@@ -35,6 +36,9 @@ export function ThumbnailSidebar(): JSX.Element {
                 className="block aspect-[16/9] w-full rounded-sm bg-white shadow-sm ring-1 ring-slate-700"
               >
                 <rect width={SLIDE_WIDTH_EMU} height={SLIDE_HEIGHT_EMU} fill="#ffffff" />
+                {slide.shapes.map((shape) => (
+                  <Shape key={shape.id} shape={shape} selected={false} editing={false} />
+                ))}
               </svg>
             </span>
           </button>
