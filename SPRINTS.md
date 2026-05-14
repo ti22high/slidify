@@ -47,7 +47,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 1 — Editor shell
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #2](https://github.com/ti22high/slidify/pull/2)
 - **Goal:** Build the editor chrome around a single empty slide.
 - **Acceptance criteria:**
   - 16:9 SVG canvas (12192000 × 6858000 EMU `viewBox`) centred in the workspace.
@@ -58,14 +58,14 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
   - Zustand store at `src/renderer/store/editorStore.ts` using Mutative, with a
     single `dispatch(action)` entry point. No undo yet.
 - **Subtasks:**
-  - [ ] `src/renderer/features/editor/EditorLayout.tsx` (grid layout)
-  - [ ] `src/renderer/features/editor/Ribbon.tsx` (tabs)
-  - [ ] `src/renderer/features/editor/ThumbnailSidebar.tsx`
-  - [ ] `src/renderer/features/editor/Inspector.tsx`
-  - [ ] `src/renderer/features/editor/StatusBar.tsx` + zoom slider
-  - [ ] `src/renderer/features/editor/SlideCanvas.tsx` (SVG, EMU viewBox)
-  - [ ] `src/renderer/store/editorStore.ts` (Zustand + Mutative, `dispatch`)
-  - [ ] Unit tests for `dispatch` action handling
+  - [x] `src/renderer/features/editor/EditorLayout.tsx` (grid layout)
+  - [x] `src/renderer/features/editor/Ribbon.tsx` (tabs)
+  - [x] `src/renderer/features/editor/ThumbnailSidebar.tsx`
+  - [x] `src/renderer/features/editor/Inspector.tsx`
+  - [x] `src/renderer/features/editor/StatusBar.tsx` + zoom slider
+  - [x] `src/renderer/features/editor/SlideCanvas.tsx` (SVG, EMU viewBox)
+  - [x] `src/renderer/store/editorStore.ts` (Zustand + Mutative, `dispatch`)
+  - [x] Unit tests for `dispatch` action handling
 - **Key files to touch:** `src/renderer/features/editor/*`, `src/renderer/store/editorStore.ts`, `src/renderer/App.tsx` (mount the editor instead of the splash).
 - **Risks:** Layout grid math with rem/px vs EMU canvas — keep chrome in CSS
   units, canvas-only in EMU.
