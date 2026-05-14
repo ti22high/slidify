@@ -165,7 +165,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 6 — XLSX streaming import
 
-- **Status:** ⬜ not started
+- **Status:** 🚧 in progress
 - **Goal:** Import very large XLSX (≥100k rows) without freezing the UI.
 - **Acceptance criteria:**
   - napi-rs binding around the `calamine` Rust crate in `native/`.
