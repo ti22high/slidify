@@ -1,7 +1,7 @@
 import type { Emu } from '../../shared/emu';
 
 export type ShapeId = string;
-export type ShapeKind = 'rect' | 'ellipse' | 'line' | 'arrow' | 'image' | 'table';
+export type ShapeKind = 'rect' | 'ellipse' | 'line' | 'arrow' | 'image' | 'table' | 'data';
 export type TextAlign = 'left' | 'center' | 'right';
 
 export interface TextBody {
@@ -38,6 +38,17 @@ export interface TablePayload {
   cells: TableCell[][];
 }
 
+export interface DataPayload {
+  /** Id into the renderer-side dataset registry. */
+  datasetId: string;
+  /** Path inside the .slidify ZIP, e.g. `data/sales.xlsx`. */
+  dataRef: string;
+  /** Sheet within the workbook. */
+  sheetName: string;
+  /** How many rows to preview in the slide. */
+  rowLimit: number;
+}
+
 export interface Shape {
   id: ShapeId;
   kind: ShapeKind;
@@ -52,6 +63,7 @@ export interface Shape {
   text?: TextBody;
   image?: ImagePayload;
   table?: TablePayload;
+  data?: DataPayload;
 }
 
 export const DEFAULT_TEXT_BODY: TextBody = {

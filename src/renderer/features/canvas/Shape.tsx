@@ -125,8 +125,10 @@ export function Shape({
       );
       break;
     }
-    case 'table': {
-      // Rendered separately as <foreignObject> by Table.tsx — leave the body empty here.
+    case 'table':
+    case 'data': {
+      // table -> rendered by Table.tsx via <foreignObject>; data -> by DataPreview.
+      // Stub a bounding box so selection/handles still work in SlideCanvas.
       body = (
         <rect
           x={shape.x}

@@ -17,6 +17,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@tanstack/react-virtual": "^3.13.24",
     "exceljs": "4.4.0",
     "jszip": "^3.10.1",
     "mutative": "1.0.11",
