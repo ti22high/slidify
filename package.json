@@ -19,6 +19,7 @@
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",
     "exceljs": "4.4.0",
+    "fast-xml-parser": "^5.8.0",
     "jszip": "^3.10.1",
     "mutative": "1.0.11",
     "react": "18.3.1",
