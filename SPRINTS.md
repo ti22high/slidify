@@ -11,7 +11,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 0 — Bootstrap
 
-- **Status:** ⬜ in progress (this PR)
+- **Status:** ✅ ready for review — [PR #1](https://github.com/ti22high/slidify/pull/1)
 - **Goal:** Stand up the repo: tooling, CI/CD, a window that opens, and a
   release pipeline that produces a single portable `.exe` on tag push.
 - **Acceptance criteria:**
