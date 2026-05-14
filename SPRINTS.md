@@ -101,7 +101,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 3 — Multi-slide
 
-- **Status:** 🚧 in progress
+- **Status:** ✅ ready for review — [PR #4](https://github.com/ti22high/slidify/pull/4)
 - **Goal:** A deck of slides with reordering, layouts, and masters.
 - **Acceptance criteria:**
   - Add / delete / duplicate slides.
@@ -110,11 +110,11 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
   - Data model cascade: slide ← layout ← master.
   - Thumbnail rendering debounced 300 ms after edits.
 - **Subtasks:**
-  - [ ] `src/renderer/model/{slide,layout,master}.ts`
-  - [ ] `src/renderer/features/editor/ThumbnailSidebar.tsx` — drag-reorder
-  - [ ] `src/renderer/features/editor/keymap.ts`
-  - [ ] `src/renderer/features/thumbnails/ThumbnailRenderer.ts` (offscreen SVG → bitmap, debounced)
-  - [ ] Tests for cascade resolution
+  - [x] `src/renderer/model/{slide,layout,master}.ts`
+  - [x] `src/renderer/features/editor/ThumbnailSidebar.tsx` — drag-reorder
+  - [x] `src/renderer/features/editor/keymap.ts`
+  - [x] `src/renderer/features/thumbnails/ThumbnailRenderer.ts` (offscreen SVG → bitmap, debounced)
+  - [x] Tests for cascade resolution
 - **Risks:** Thumbnail bitmap quality vs cost; debounce window tuning.
 
 ---
