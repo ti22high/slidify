@@ -1,3 +1,4 @@
+import { FormatBar } from './FormatBar';
 import { Inspector } from './Inspector';
 import { Ribbon } from './Ribbon';
 import { SlideCanvas } from './SlideCanvas';
@@ -18,10 +19,11 @@ export function EditorLayout(): JSX.Element {
     <div
       className="grid h-full w-full bg-slate-950 text-slate-100"
       style={{
-        gridTemplateRows: '48px 1fr 32px',
+        gridTemplateRows: '48px 40px 1fr 32px',
         gridTemplateColumns: '220px 1fr 280px',
         gridTemplateAreas: `
           "ribbon ribbon ribbon"
+          "format format format"
           "sidebar canvas inspector"
           "status status status"
         `,
@@ -29,6 +31,9 @@ export function EditorLayout(): JSX.Element {
     >
       <div style={{ gridArea: 'ribbon' }}>
         <Ribbon />
+      </div>
+      <div style={{ gridArea: 'format' }}>
+        <FormatBar />
       </div>
       <div style={{ gridArea: 'sidebar' }} className="overflow-hidden">
         <ThumbnailSidebar />
