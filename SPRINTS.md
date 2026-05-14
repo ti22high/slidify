@@ -121,7 +121,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 4 — Undo/Redo + Autosave
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #5](https://github.com/ti22high/slidify/pull/5)
 - **Goal:** Lossless undo and crash-safe autosave.
 - **Acceptance criteria:**
   - Mutative snapshot stack capped at **200** steps.
@@ -132,12 +132,12 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
   - Crash recovery dialog on launch if WAL exists without a clean shutdown
     marker.
 - **Subtasks:**
-  - [ ] `src/renderer/store/undoStack.ts` (200-cap)
-  - [ ] `src/main/persistence/wal.ts`
-  - [ ] `src/main/persistence/snapshot.ts`
-  - [ ] `src/main/persistence/atomicWrite.ts`
-  - [ ] `src/renderer/features/recovery/RecoveryDialog.tsx`
-  - [ ] Tests for WAL replay and cap enforcement
+  - [x] `src/renderer/store/undoStack.ts` (200-cap)
+  - [x] `src/main/persistence/wal.ts`
+  - [x] `src/main/persistence/snapshot.ts`
+  - [x] `src/main/persistence/atomicWrite.ts`
+  - [x] `src/renderer/features/recovery/RecoveryDialog.tsx`
+  - [x] Tests for WAL replay and cap enforcement
 - **Risks:** fsync semantics on macOS vs Windows; clock skew for "5 min".
 
 ---

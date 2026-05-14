@@ -6,6 +6,15 @@ import { DEFAULT_LAYOUT_ID } from '../model/layout';
 import { DEFAULT_MASTER, type SlideMaster } from '../model/master';
 import type { Shape, ShapeId, TextBody } from '../model/shape';
 import type { Slide, SlideId } from '../model/slide';
+import {
+  canRedo as canRedoStack,
+  canUndo as canUndoStack,
+  emptyUndoStack,
+  push as pushStack,
+  redo as redoStack,
+  undo as undoStack,
+  type UndoStack,
+} from './undoStack';
 
 export const MIN_ZOOM = 0.25;
 export const MAX_ZOOM = 4;
@@ -35,9 +44,35 @@ export type Action =
   | { type: 'selection/clear' }
   | { type: 'text/update'; slideId: SlideId; shapeId: ShapeId; patch: Partial<TextBody> }
   | { type: 'text/edit/start'; shapeId: ShapeId }
-  | { type: 'text/edit/end' };
+  | { type: 'text/edit/end' }
+  | { type: 'undo' }
+  | { type: 'redo' }
+  | { type: 'state/replace'; state: EditorState };
+
+/**
+ * Document-mutating actions are pushed onto the undo stack and emitted to the WAL.
+ * UI-state actions (selection, zoom, slide-select, text editing toggles) are not.
+ */
+export function isDocumentMutating(action: Action): boolean {
+  switch (action.type) {
+    case 'slide/add':
+    case 'slide/delete':
+    case 'slide/duplicate':
+    case 'slide/reorder':
+    case 'shape/add':
+    case 'shape/update':
+    case 'shape/delete':
+    case 'text/update':
+      return true;
+    default:
+      return false;
+  }
+}
 
 export interface EditorStore extends EditorState {
+  history: UndoStack<EditorState>;
+  canUndo: boolean;
+  canRedo: boolean;
   dispatch: (action: Action) => void;
 }
 
@@ -95,6 +130,8 @@ function deepCloneShape(shape: Shape): Shape {
 }
 
 export function reduce(state: EditorState, action: Action): EditorState {
+  if (action.type === 'undo' || action.type === 'redo') return state;
+  if (action.type === 'state/replace') return action.state;
   return mutate(state, (draft) => {
     switch (action.type) {
       case 'slide/select': {
@@ -237,13 +274,74 @@ export function reduce(state: EditorState, action: Action): EditorState {
   });
 }
 
-export const useEditorStore = createStore<EditorStore>((set) => ({
+interface DispatchOutcome {
+  state: EditorState;
+  history: UndoStack<EditorState>;
+  /** True iff the dispatch produced a brand-new document mutation (worth WAL-logging). */
+  recorded: boolean;
+}
+
+/**
+ * Pure transition: applies an action and updates the undo stack.
+ * The Zustand store wires this into `set`; main-process replay can call it directly.
+ */
+export function step(
+  state: EditorState,
+  history: UndoStack<EditorState>,
+  action: Action,
+): DispatchOutcome {
+  if (action.type === 'undo') {
+    const popped = undoStack(history, state);
+    if (!popped) return { state, history, recorded: false };
+    return { state: popped.restored, history: popped.stack, recorded: false };
+  }
+  if (action.type === 'redo') {
+    const popped = redoStack(history, state);
+    if (!popped) return { state, history, recorded: false };
+    return { state: popped.restored, history: popped.stack, recorded: false };
+  }
+  if (action.type === 'state/replace') {
+    return { state: action.state, history: emptyUndoStack(), recorded: false };
+  }
+  const next = reduce(state, action);
+  if (next === state) return { state, history, recorded: false };
+  if (!isDocumentMutating(action)) {
+    return { state: next, history, recorded: false };
+  }
+  return { state: next, history: pushStack(history, state), recorded: true };
+}
+
+type DispatchObserver = (action: Action, nextState: EditorState) => void;
+const observers: DispatchObserver[] = [];
+
+export function subscribeToDispatch(observer: DispatchObserver): () => void {
+  observers.push(observer);
+  return () => {
+    const idx = observers.indexOf(observer);
+    if (idx >= 0) observers.splice(idx, 1);
+  };
+}
+
+export const useEditorStore = createStore<EditorStore>((set, get) => ({
   ...initialState,
-  dispatch: (action) =>
-    set((state) => {
-      const { dispatch: _dispatch, ...current } = state;
-      return reduce(current, action);
-    }),
+  history: emptyUndoStack(),
+  canUndo: false,
+  canRedo: false,
+  dispatch: (action) => {
+    const prev = get();
+    const { dispatch: _d, history, canUndo: _u, canRedo: _r, ...currentState } = prev;
+    const outcome = step(currentState, history, action);
+    const nextSlice = {
+      ...outcome.state,
+      history: outcome.history,
+      canUndo: canUndoStack(outcome.history),
+      canRedo: canRedoStack(outcome.history),
+    };
+    set(nextSlice);
+    if (outcome.recorded) {
+      for (const obs of observers) obs(action, outcome.state);
+    }
+  },
 }));
 
 /** Default centred shape for the Insert tab. */
