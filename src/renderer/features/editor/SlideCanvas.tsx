@@ -5,12 +5,13 @@ import { Shape } from '../canvas/Shape';
 import { SelectionHandles } from '../canvas/SelectionHandles';
 import { shapesInMarquee, type Rect } from '../canvas/geometry';
 import { openContextMenu } from './ContextMenu';
+import { EditOverlay } from './EditOverlay';
+import { Chart } from '../chart/Chart';
 import { DataPreview } from '../data/DataPreview';
 import { ImageDropOverlay } from '../media/ImageDrop';
 import { resolveSlide } from '../slides/cascade';
 import { Table } from '../table/Table';
 import { registerBundledFonts } from '../text/fontLoader';
-import { TextFrame } from '../text/TextFrame';
 import { useEditorStore } from '../../store/editorStore';
 
 const BASE_WIDTH_PX = 960;
@@ -137,12 +138,9 @@ export function SlideCanvas(): JSX.Element {
 
   const editingShape =
     editingShapeId && slide ? slide.shapes.find((s) => s.id === editingShapeId) ?? null : null;
-  // Text frame overlay is only meaningful for shapes that have a flat text body
-  // and are not tables (tables are edited in-place via Table.tsx).
-  const editingTextShape =
-    editingShape && editingShape.kind !== 'table' && editingShape.text ? editingShape : null;
 
-  void zoom; // referenced so toolbar position re-evaluates if needed.
+  const scalePxPerEmu = 1 / emuPerPixel;
+  void zoom; // referenced so the overlay scale re-evaluates on zoom.
 
   if (!slide) {
     return <section aria-label="Slide canvas" className="h-full w-full bg-slate-300" />;
@@ -214,7 +212,28 @@ export function SlideCanvas(): JSX.Element {
                   onDoubleClick={onShapeDoubleClick(shape.id)}
                   data-shape-id={shape.id}
                 >
-                  <Table shape={shape} slideId={slide.id} editable={editingShapeId === shape.id} />
+                  {/* Editing overlay handles input — keep SVG table read-only to avoid foreignObject focus issues. */}
+                  <Table shape={shape} slideId={slide.id} editable={false} />
+                </g>
+              );
+            }
+            if (shape.kind === 'chart' && shape.chart) {
+              return (
+                <g key={shape.id} onPointerDown={beginDragShape(shape.id)} data-shape-id={shape.id}>
+                  <foreignObject x={shape.x} y={shape.y} width={shape.w} height={shape.h}>
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        background: shape.fill === 'none' ? 'transparent' : shape.fill,
+                        border: `1px solid ${shape.stroke}`,
+                        borderRadius: 4,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Chart payload={shape.chart} />
+                    </div>
+                  </foreignObject>
                 </g>
               );
             }
@@ -252,7 +271,6 @@ export function SlideCanvas(): JSX.Element {
               />
             );
           })}
-          {editingTextShape ? <TextFrame shape={editingTextShape} slideId={slide.id} /> : null}
           {selectedShapes.map((shape) =>
             editingShapeId === shape.id ? null : (
               <SelectionHandles
@@ -265,6 +283,12 @@ export function SlideCanvas(): JSX.Element {
           )}
           <Marquee rect={marquee} />
         </svg>
+        <EditOverlay
+          shape={editingShape}
+          slideId={slide.id}
+          scalePxPerEmu={scalePxPerEmu}
+          marginEmu={WORKSPACE_MARGIN_EMU}
+        />
       </div>
     </section>
   );

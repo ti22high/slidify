@@ -2,7 +2,14 @@ import { useRef, useState } from 'react';
 import { useT, useI18nStore } from '../../i18n';
 import { importXlsxIntoSlide } from '../data/importXlsx';
 import { insertImageFromFile } from '../media/ImageDrop';
-import { makeShape, makeTableShape, makeTextShape, useEditorStore } from '../../store/editorStore';
+import {
+  makeChartShape,
+  makeShape,
+  makeTableShape,
+  makeTextShape,
+  useEditorStore,
+} from '../../store/editorStore';
+import { useDataStore } from '../../store/dataStore';
 import { useUiStore } from '../../store/uiStore';
 import { THEMES } from '../../themes';
 import { PRESET_NAMES, categoryOf, type PresetName } from '../presentation/presets';
@@ -114,6 +121,26 @@ export function Ribbon(): JSX.Element {
               className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
             >
               + {t('ribbon.insert.xlsx')}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const datasets = Object.values(useDataStore.getState().datasets);
+                const ds = datasets[datasets.length - 1];
+                if (!ds) {
+                  alert(t('ribbon.insert.chartNeedsData'));
+                  return;
+                }
+                const series = ds.headers[1] ?? 'Series';
+                dispatch({
+                  type: 'shape/add',
+                  slideId: selectedSlideId,
+                  shape: makeChartShape(ds.id, series),
+                });
+              }}
+              className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+            >
+              + {t('ribbon.insert.chart')}
             </button>
             <input
               ref={fileInputRef}

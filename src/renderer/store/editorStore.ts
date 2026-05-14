@@ -480,6 +480,29 @@ export function makeTextShape(): Shape {
   };
 }
 
+export function makeChartShape(datasetId: string, seriesName = 'Series'): Shape {
+  const w = 6 * 914400;
+  const h = 3.5 * 914400;
+  return {
+    id: nextShapeId(),
+    kind: 'chart',
+    x: (SLIDE_WIDTH_EMU - w) / 2,
+    y: (SLIDE_HEIGHT_EMU - h) / 2,
+    w,
+    h,
+    rotation: 0,
+    fill: '#ffffff',
+    stroke: '#334155',
+    strokeWidth: 9525,
+    chart: {
+      kind: 'bar',
+      datasetId,
+      categoryColumn: 0,
+      series: [{ name: seriesName, valueColumn: 1 }],
+    },
+  };
+}
+
 export function makeTableShape(rows: number, cols: number): Shape {
   const w = 6 * 914400; // 6 inches
   const h = rows * 600000;
