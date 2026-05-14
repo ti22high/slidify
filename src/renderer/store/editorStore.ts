@@ -45,6 +45,19 @@ export type Action =
   | { type: 'text/update'; slideId: SlideId; shapeId: ShapeId; patch: Partial<TextBody> }
   | { type: 'text/edit/start'; shapeId: ShapeId }
   | { type: 'text/edit/end' }
+  | { type: 'theme/apply'; background: string }
+  | {
+      type: 'shape/animation/add';
+      slideId: SlideId;
+      shapeId: ShapeId;
+      animation: import('../model/shape').AnimationStepDef;
+    }
+  | {
+      type: 'shape/animation/remove';
+      slideId: SlideId;
+      shapeId: ShapeId;
+      index: number;
+    }
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'state/replace'; state: EditorState };
@@ -63,6 +76,9 @@ export function isDocumentMutating(action: Action): boolean {
     case 'shape/update':
     case 'shape/delete':
     case 'text/update':
+    case 'theme/apply':
+    case 'shape/animation/add':
+    case 'shape/animation/remove':
       return true;
     default:
       return false;
@@ -268,6 +284,29 @@ export function reduce(state: EditorState, action: Action): EditorState {
       }
       case 'text/edit/end': {
         draft.editingShapeId = null;
+        return;
+      }
+      case 'theme/apply': {
+        if (draft.masters[0]) {
+          draft.masters[0].background = action.background;
+        }
+        return;
+      }
+      case 'shape/animation/add': {
+        const slide = findSlide(draft.slides, action.slideId);
+        const shape = slide?.shapes.find((s) => s.id === action.shapeId);
+        if (shape) {
+          shape.animations = [...(shape.animations ?? []), action.animation];
+        }
+        return;
+      }
+      case 'shape/animation/remove': {
+        const slide = findSlide(draft.slides, action.slideId);
+        const shape = slide?.shapes.find((s) => s.id === action.shapeId);
+        if (shape && shape.animations) {
+          shape.animations.splice(action.index, 1);
+          if (shape.animations.length === 0) delete shape.animations;
+        }
         return;
       }
     }

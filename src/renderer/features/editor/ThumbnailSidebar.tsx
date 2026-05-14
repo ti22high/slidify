@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SLIDE_HEIGHT_EMU, SLIDE_WIDTH_EMU } from '../../../shared/emu';
+import { useT } from '../../i18n';
 import type { Slide } from '../../model/slide';
 import { useThumbnail } from '../thumbnails/useThumbnail';
 import { useEditorStore } from '../../store/editorStore';
@@ -87,6 +88,7 @@ function Thumb({
 }
 
 export function ThumbnailSidebar(): JSX.Element {
+  const t = useT();
   const slides = useEditorStore((s) => s.slides);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const dispatch = useEditorStore((s) => s.dispatch);
@@ -99,13 +101,13 @@ export function ThumbnailSidebar(): JSX.Element {
     >
       <header className="flex items-center justify-between gap-1 border-b border-slate-800 px-2 py-1.5">
         <span className="px-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Slides
+          {t('sidebar.slides')}
         </span>
         <div className="flex items-center gap-1">
           <button
             type="button"
-            aria-label="Add slide"
-            title="Add slide"
+            aria-label={t('sidebar.add')}
+            title={t('sidebar.add')}
             onClick={() => dispatch({ type: 'slide/add', afterSlideId: selectedSlideId })}
             className="rounded border border-slate-700 bg-slate-800/60 px-1.5 py-0.5 text-xs text-slate-200 hover:bg-slate-800"
           >
@@ -113,8 +115,8 @@ export function ThumbnailSidebar(): JSX.Element {
           </button>
           <button
             type="button"
-            aria-label="Duplicate slide"
-            title="Duplicate slide"
+            aria-label={t('sidebar.duplicate')}
+            title={t('sidebar.duplicate')}
             onClick={() => dispatch({ type: 'slide/duplicate', slideId: selectedSlideId })}
             className="rounded border border-slate-700 bg-slate-800/60 px-1.5 py-0.5 text-xs text-slate-200 hover:bg-slate-800"
           >
@@ -122,8 +124,8 @@ export function ThumbnailSidebar(): JSX.Element {
           </button>
           <button
             type="button"
-            aria-label="Delete slide"
-            title="Delete slide"
+            aria-label={t('sidebar.delete')}
+            title={t('sidebar.delete')}
             disabled={slides.length <= 1}
             onClick={() => dispatch({ type: 'slide/delete', slideId: selectedSlideId })}
             className="rounded border border-slate-700 bg-slate-800/60 px-1.5 py-0.5 text-xs text-slate-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"

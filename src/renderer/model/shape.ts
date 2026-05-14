@@ -57,6 +57,12 @@ export interface DataPayload {
   rowLimit: number;
 }
 
+export interface AnimationStepDef {
+  preset: string;
+  trigger: 'onClick' | 'withPrevious' | 'afterPrevious';
+  durationMs?: number;
+}
+
 export interface Shape {
   id: ShapeId;
   kind: ShapeKind;
@@ -73,6 +79,7 @@ export interface Shape {
   table?: TablePayload;
   data?: DataPayload;
   chart?: import('./chart').ChartPayload;
+  animations?: AnimationStepDef[];
 }
 
 export const DEFAULT_TEXT_BODY: TextBody = {
