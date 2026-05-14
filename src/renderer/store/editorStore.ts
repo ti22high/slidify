@@ -344,8 +344,8 @@ export const useEditorStore = createStore<EditorStore>((set, get) => ({
   },
 }));
 
-/** Default centred shape for the Insert tab. */
-export function makeShape(kind: Shape['kind']): Shape {
+/** Default centred shape for the Insert tab. Tables and images use their own factories. */
+export function makeShape(kind: 'rect' | 'ellipse' | 'line' | 'arrow'): Shape {
   const w = 3000000;
   const h = kind === 'line' || kind === 'arrow' ? 0 : 1800000;
   const x = (SLIDE_WIDTH_EMU - w) / 2;
@@ -373,5 +373,36 @@ export function makeShape(kind: Shape['kind']): Shape {
             align: 'center',
           }
         : undefined,
+  };
+}
+
+export function makeTableShape(rows: number, cols: number): Shape {
+  const w = 6 * 914400; // 6 inches
+  const h = rows * 600000;
+  return {
+    id: nextShapeId(),
+    kind: 'table',
+    x: (SLIDE_WIDTH_EMU - w) / 2,
+    y: (SLIDE_HEIGHT_EMU - h) / 2,
+    w,
+    h,
+    rotation: 0,
+    fill: '#ffffff',
+    stroke: '#0f172a',
+    strokeWidth: 9525,
+    text: {
+      text: '',
+      fontFamily: 'Inter',
+      fontSize: 14,
+      bold: false,
+      italic: false,
+      color: '#0f172a',
+      align: 'left',
+    },
+    table: {
+      rows,
+      cols,
+      cells: Array.from({ length: rows }, () => Array.from({ length: cols }, () => ({ text: '' }))),
+    },
   };
 }

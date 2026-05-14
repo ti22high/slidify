@@ -4,7 +4,9 @@ import { Marquee } from '../canvas/Marquee';
 import { Shape } from '../canvas/Shape';
 import { SelectionHandles } from '../canvas/SelectionHandles';
 import { shapesInMarquee, type Rect } from '../canvas/geometry';
+import { ImageDropOverlay } from '../media/ImageDrop';
 import { resolveSlide } from '../slides/cascade';
+import { Table } from '../table/Table';
 import { registerBundledFonts } from '../text/fontLoader';
 import { TextFrame } from '../text/TextFrame';
 import { TextToolbar } from '../text/TextToolbar';
@@ -124,6 +126,10 @@ export function SlideCanvas(): JSX.Element {
 
   const editingShape =
     editingShapeId && slide ? slide.shapes.find((s) => s.id === editingShapeId) ?? null : null;
+  // Text frame overlay is only meaningful for shapes that have a flat text body
+  // and are not tables (tables are edited in-place via Table.tsx).
+  const editingTextShape =
+    editingShape && editingShape.kind !== 'table' && editingShape.text ? editingShape : null;
 
   const toolbarShape =
     selectedShapes.length === 1 && selectedShapes[0]?.text ? selectedShapes[0] : null;
@@ -153,6 +159,7 @@ export function SlideCanvas(): JSX.Element {
       aria-label="Slide canvas"
       className="relative flex h-full w-full items-center justify-center overflow-auto bg-slate-950 p-8"
     >
+      <ImageDropOverlay slideId={slide.id} />
       <div className="relative" style={{ width: widthPx, height: heightPx }}>
         <svg
           ref={svgRef}
@@ -176,17 +183,28 @@ export function SlideCanvas(): JSX.Element {
               <Shape key={`layout-${shape.id}`} shape={shape} selected={false} editing={false} />
             ),
           )}
-          {slide.shapes.map((shape) => (
-            <Shape
-              key={shape.id}
-              shape={shape}
-              selected={selectedSet.has(shape.id)}
-              editing={editingShapeId === shape.id}
-              onPointerDown={beginDragShape(shape.id)}
-              onDoubleClick={onShapeDoubleClick(shape.id)}
-            />
-          ))}
-          {editingShape ? <TextFrame shape={editingShape} slideId={slide.id} /> : null}
+          {slide.shapes.map((shape) =>
+            shape.kind === 'table' ? (
+              <g
+                key={shape.id}
+                onPointerDown={beginDragShape(shape.id)}
+                onDoubleClick={onShapeDoubleClick(shape.id)}
+                data-shape-id={shape.id}
+              >
+                <Table shape={shape} slideId={slide.id} editable={editingShapeId === shape.id} />
+              </g>
+            ) : (
+              <Shape
+                key={shape.id}
+                shape={shape}
+                selected={selectedSet.has(shape.id)}
+                editing={editingShapeId === shape.id}
+                onPointerDown={beginDragShape(shape.id)}
+                onDoubleClick={onShapeDoubleClick(shape.id)}
+              />
+            ),
+          )}
+          {editingTextShape ? <TextFrame shape={editingTextShape} slideId={slide.id} /> : null}
           {selectedShapes.map((shape) =>
             editingShapeId === shape.id ? null : (
               <SelectionHandles
