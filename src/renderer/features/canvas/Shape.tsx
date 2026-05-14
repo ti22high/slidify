@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
+import { useSyncExternalStore } from 'react';
 import { EMU_PER_POINT } from '../../../shared/emu';
 import type { Shape as ShapeModel } from '../../model/shape';
+import { getMediaUrl, subscribeMedia } from '../media/mediaCache';
 
 interface Props {
   shape: ShapeModel;
@@ -13,6 +15,42 @@ interface Props {
 function transformFor(shape: ShapeModel): string | undefined {
   if (!shape.rotation) return undefined;
   return `rotate(${shape.rotation} ${shape.x + shape.w / 2} ${shape.y + shape.h / 2})`;
+}
+
+function ImageBody({
+  x,
+  y,
+  w,
+  h,
+  mediaRef,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  mediaRef?: string;
+}): JSX.Element | null {
+  const url = useSyncExternalStore(
+    subscribeMedia,
+    () => (mediaRef ? getMediaUrl(mediaRef) : undefined),
+    () => undefined,
+  );
+  if (!mediaRef) return null;
+  if (!url) {
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={w}
+        height={h}
+        fill="#e2e8f0"
+        stroke="#94a3b8"
+        strokeWidth={9525}
+        strokeDasharray="38100 19050"
+      />
+    );
+  }
+  return <image x={x} y={y} width={w} height={h} href={url} preserveAspectRatio="xMidYMid meet" />;
 }
 
 export function Shape({
@@ -71,6 +109,33 @@ export function Shape({
           stroke={shape.stroke}
           strokeWidth={shape.strokeWidth}
           markerEnd={shape.kind === 'arrow' ? `url(#slidify-arrow-${shape.id})` : undefined}
+        />
+      );
+      break;
+    }
+    case 'image': {
+      body = (
+        <ImageBody
+          x={shape.x}
+          y={shape.y}
+          w={shape.w}
+          h={shape.h}
+          mediaRef={shape.image?.mediaRef}
+        />
+      );
+      break;
+    }
+    case 'table': {
+      // Rendered separately as <foreignObject> by Table.tsx — leave the body empty here.
+      body = (
+        <rect
+          x={shape.x}
+          y={shape.y}
+          width={shape.w}
+          height={shape.h}
+          fill="none"
+          stroke={shape.stroke}
+          strokeWidth={shape.strokeWidth}
         />
       );
       break;

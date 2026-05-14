@@ -144,7 +144,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 5 — Images and tables
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #6](https://github.com/ti22high/slidify/pull/6)
 - **Goal:** Embed images and basic tables; round-trip through `.slidify`.
 - **Acceptance criteria:**
   - Drag-drop image → copied to `media/` inside the doc, referenced as
@@ -154,10 +154,10 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
     borders / fill / alignment.
   - Save → load → diff is identical on `document.json`.
 - **Subtasks:**
-  - [ ] `src/main/persistence/slidifyZip.ts` (open/save .slidify ZIP)
-  - [ ] `src/renderer/features/media/ImageDrop.tsx`
-  - [ ] `src/renderer/features/table/Table.tsx`
-  - [ ] Tests: round-trip equality on a sample deck
+  - [x] `src/main/persistence/slidifyZip.ts` (open/save .slidify ZIP)
+  - [x] `src/renderer/features/media/ImageDrop.tsx`
+  - [x] `src/renderer/features/table/Table.tsx`
+  - [x] Tests: round-trip equality on a sample deck
 - **Risks:** Large image perf in SVG `<image>`; keep `media/` as files, never
   base64 in `document.json`.
 

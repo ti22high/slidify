@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import type { ShapeKind } from '../../model/shape';
-import { makeShape, useEditorStore } from '../../store/editorStore';
+import { useRef, useState } from 'react';
+import { insertImageFromFile } from '../media/ImageDrop';
+import { makeShape, makeTableShape, useEditorStore } from '../../store/editorStore';
 
 const TABS = ['Insert', 'Design', 'Animations', 'Present'] as const;
 type Tab = (typeof TABS)[number];
 
-const INSERT_BUTTONS: { label: string; kind: ShapeKind }[] = [
+const INSERT_BUTTONS = [
   { label: 'Rectangle', kind: 'rect' },
   { label: 'Ellipse', kind: 'ellipse' },
   { label: 'Line', kind: 'line' },
   { label: 'Arrow', kind: 'arrow' },
-];
+] as const;
 
 export function Ribbon(): JSX.Element {
   const [activeTab, setActiveTab] = useState<Tab>('Insert');
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const dispatch = useEditorStore((s) => s.dispatch);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <nav
@@ -60,6 +61,37 @@ export function Ribbon(): JSX.Element {
               + {b.label}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() =>
+              dispatch({
+                type: 'shape/add',
+                slideId: selectedSlideId,
+                shape: makeTableShape(3, 3),
+              })
+            }
+            className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+          >
+            + Table
+          </button>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="rounded border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200 hover:bg-slate-800"
+          >
+            + Image…
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) void insertImageFromFile(file, selectedSlideId);
+              e.target.value = '';
+            }}
+          />
         </div>
       ) : (
         <span className="text-xs text-slate-500">{activeTab} — coming in a later sprint</span>
