@@ -415,6 +415,32 @@ export function makeShape(kind: 'rect' | 'ellipse' | 'line' | 'arrow'): Shape {
   };
 }
 
+export function makeTextShape(): Shape {
+  const w = 4 * 914400;
+  const h = 600000;
+  return {
+    id: nextShapeId(),
+    kind: 'rect',
+    x: (SLIDE_WIDTH_EMU - w) / 2,
+    y: (SLIDE_HEIGHT_EMU - h) / 2,
+    w,
+    h,
+    rotation: 0,
+    fill: 'none',
+    stroke: 'none',
+    strokeWidth: 0,
+    text: {
+      text: 'Текст',
+      fontFamily: 'Inter',
+      fontSize: 24,
+      bold: false,
+      italic: false,
+      color: '#0f172a',
+      align: 'left',
+    },
+  };
+}
+
 export function makeTableShape(rows: number, cols: number): Shape {
   const w = 6 * 914400; // 6 inches
   const h = rows * 600000;

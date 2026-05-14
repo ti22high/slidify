@@ -14,7 +14,11 @@ import { TextToolbar } from '../text/TextToolbar';
 import { useEditorStore } from '../../store/editorStore';
 
 const BASE_WIDTH_PX = 960;
-const ASPECT = SLIDE_HEIGHT_EMU / SLIDE_WIDTH_EMU;
+/** Workspace padding around the slide so shapes can be dragged outside. */
+const WORKSPACE_MARGIN_EMU = 1828800; // ≈ 2 inches each side
+const WORKSPACE_WIDTH_EMU = SLIDE_WIDTH_EMU + WORKSPACE_MARGIN_EMU * 2;
+const WORKSPACE_HEIGHT_EMU = SLIDE_HEIGHT_EMU + WORKSPACE_MARGIN_EMU * 2;
+const WORKSPACE_ASPECT = WORKSPACE_HEIGHT_EMU / WORKSPACE_WIDTH_EMU;
 
 export function SlideCanvas(): JSX.Element {
   const slides = useEditorStore((s) => s.slides);
@@ -37,9 +41,11 @@ export function SlideCanvas(): JSX.Element {
     () => (slide ? resolveSlide(slide, layouts, masters) : null),
     [slide, layouts, masters],
   );
-  const widthPx = BASE_WIDTH_PX * zoom;
-  const heightPx = widthPx * ASPECT;
-  const emuPerPixel = SLIDE_WIDTH_EMU / widthPx;
+  const slideWidthPx = BASE_WIDTH_PX * zoom;
+  // Workspace area = slide + margin on each side so shapes can be dragged outside.
+  const widthPx = slideWidthPx * (WORKSPACE_WIDTH_EMU / SLIDE_WIDTH_EMU);
+  const heightPx = widthPx * WORKSPACE_ASPECT;
+  const emuPerPixel = SLIDE_WIDTH_EMU / slideWidthPx;
 
   const selectedSet = useMemo(() => new Set(selectedShapeIds), [selectedShapeIds]);
   const selectedShapes = useMemo(
@@ -133,7 +139,13 @@ export function SlideCanvas(): JSX.Element {
     editingShape && editingShape.kind !== 'table' && editingShape.text ? editingShape : null;
 
   const toolbarShape =
-    selectedShapes.length === 1 && selectedShapes[0]?.text ? selectedShapes[0] : null;
+    selectedShapes.length === 1 &&
+    selectedShapes[0]?.text &&
+    selectedShapes[0].kind !== 'table' &&
+    selectedShapes[0].kind !== 'data' &&
+    selectedShapes[0].kind !== 'chart'
+      ? selectedShapes[0]
+      : null;
 
   const toolbarPos = useMemo(() => {
     if (!toolbarShape || !svgRef.current) return null;
@@ -152,13 +164,13 @@ export function SlideCanvas(): JSX.Element {
   }, [toolbarShape, zoom, slide]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!slide) {
-    return <section aria-label="Slide canvas" className="h-full w-full bg-slate-950" />;
+    return <section aria-label="Slide canvas" className="h-full w-full bg-slate-300" />;
   }
 
   return (
     <section
       aria-label="Slide canvas"
-      className="relative flex h-full w-full items-center justify-center overflow-auto bg-slate-950 p-8"
+      className="relative flex h-full w-full items-center justify-center overflow-auto bg-slate-300 p-8"
     >
       <ImageDropOverlay slideId={slide.id} />
       <div className="relative" style={{ width: widthPx, height: heightPx }}>
@@ -166,18 +178,37 @@ export function SlideCanvas(): JSX.Element {
           ref={svgRef}
           role="img"
           aria-label={slide.name ?? 'Slide'}
-          viewBox={`0 0 ${SLIDE_WIDTH_EMU} ${SLIDE_HEIGHT_EMU}`}
+          viewBox={`${-WORKSPACE_MARGIN_EMU} ${-WORKSPACE_MARGIN_EMU} ${WORKSPACE_WIDTH_EMU} ${WORKSPACE_HEIGHT_EMU}`}
           width={widthPx}
           height={heightPx}
           preserveAspectRatio="xMidYMid meet"
-          className="bg-white shadow-2xl ring-1 ring-slate-700"
+          className="block"
           onPointerDown={onCanvasPointerDown}
         >
+          {/* Workspace background (light gray, fills the SVG viewport). */}
           <rect
+            x={-WORKSPACE_MARGIN_EMU}
+            y={-WORKSPACE_MARGIN_EMU}
+            width={WORKSPACE_WIDTH_EMU}
+            height={WORKSPACE_HEIGHT_EMU}
+            fill="#cbd5e1"
+          />
+          {/* Slide rect (white, sits inside the workspace). */}
+          <rect
+            x={0}
+            y={0}
             width={SLIDE_WIDTH_EMU}
             height={SLIDE_HEIGHT_EMU}
             fill={resolved?.background ?? '#ffffff'}
+            stroke="#94a3b8"
+            strokeWidth={6350}
+            filter="url(#slide-shadow)"
           />
+          <defs>
+            <filter id="slide-shadow" x="-5%" y="-5%" width="110%" height="110%">
+              <feDropShadow dx="0" dy="50000" stdDeviation="40000" floodOpacity="0.25" />
+            </filter>
+          </defs>
           {/* Layout-level placeholder shapes (non-interactive in the editor). */}
           {(resolved?.shapes.slice(0, resolved.shapes.length - slide.shapes.length) ?? []).map(
             (shape) => (
