@@ -304,7 +304,7 @@ For workflow rules, see `CLAUDE.md`. For per-sprint execution, run
 
 ## Sprint 12 — Themes + Polish
 
-- **Status:** ⬜ not started
+- **Status:** ✅ ready for review — [PR #13](https://github.com/ti22high/slidify/pull/13) (RC1)
 - **Goal:** Ship RC1.
 - **Acceptance criteria:**
   - 5–10 master themes (color scheme + font pair).
