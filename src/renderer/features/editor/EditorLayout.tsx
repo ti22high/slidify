@@ -1,6 +1,7 @@
+import { AnimationsPanel } from './AnimationsPanel';
 import { FormatBar } from './FormatBar';
 import { Inspector } from './Inspector';
-import { Ribbon } from './Ribbon';
+import { MenuBar } from './MenuBar';
 import { SlideCanvas } from './SlideCanvas';
 import { StatusBar } from './StatusBar';
 import { ThumbnailSidebar } from './ThumbnailSidebar';
@@ -17,20 +18,20 @@ export function EditorLayout(): JSX.Element {
   useDirtyTracker();
   return (
     <div
-      className="grid h-full w-full bg-slate-950 text-slate-100"
+      className="relative grid h-full w-full bg-slate-950 text-slate-100"
       style={{
-        gridTemplateRows: '48px 40px 1fr 32px',
+        gridTemplateRows: '36px 40px 1fr 32px',
         gridTemplateColumns: '220px 1fr 280px',
         gridTemplateAreas: `
-          "ribbon ribbon ribbon"
+          "menubar menubar menubar"
           "format format format"
           "sidebar canvas inspector"
           "status status status"
         `,
       }}
     >
-      <div style={{ gridArea: 'ribbon' }}>
-        <Ribbon />
+      <div style={{ gridArea: 'menubar' }}>
+        <MenuBar />
       </div>
       <div style={{ gridArea: 'format' }}>
         <FormatBar />
@@ -49,6 +50,7 @@ export function EditorLayout(): JSX.Element {
       </div>
       <RecoveryDialog />
       <ContextMenu />
+      <AnimationsPanel />
     </div>
   );
 }

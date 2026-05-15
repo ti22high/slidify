@@ -116,6 +116,67 @@ const en: Strings = {
   'player.noNotes': 'No speaker notes.',
   'player.notes': 'Notes',
   'player.exitHint': 'Press Esc to exit',
+
+  // menu bar (classic Google-Slides-style top menu)
+  'menu.file': 'File',
+  'menu.edit': 'Edit',
+  'menu.view': 'View',
+  'menu.insert': 'Insert',
+  'menu.format': 'Format',
+  'menu.slide': 'Slide',
+  'menu.arrange': 'Arrange',
+  'menu.tools': 'Tools',
+  'menu.help': 'Help',
+  'menu.present.button': 'Slideshow',
+
+  'menu.file.new': 'New',
+  'menu.file.open': 'Open…',
+  'menu.file.save': 'Save',
+  'menu.file.saveAs': 'Save as…',
+  'menu.file.importXlsx': 'Import XLSX…',
+  'menu.file.importPptx': 'Import PPTX… (coming soon)',
+  'menu.file.exportPptx': 'Export PPTX… (coming soon)',
+  'menu.file.exportPdf': 'Export PDF… (coming soon)',
+
+  'menu.edit.undo': 'Undo',
+  'menu.edit.redo': 'Redo',
+  'menu.edit.selectAll': 'Select all',
+  'menu.edit.duplicate': 'Duplicate',
+  'menu.edit.delete': 'Delete',
+
+  'menu.view.zoomIn': 'Zoom in',
+  'menu.view.zoomOut': 'Zoom out',
+  'menu.view.zoomReset': 'Reset zoom',
+  'menu.view.showAnimations': 'Show Animations panel',
+  'menu.view.hideAnimations': 'Hide Animations panel',
+  'menu.view.present': 'Present',
+  'menu.view.presenter': 'Presenter view',
+
+  'menu.insert.shapes': 'Shapes',
+
+  'menu.format.theme': 'Theme',
+  'menu.format.hint': 'Use the toolbar to format text and shapes.',
+
+  'menu.slide.new': 'New slide',
+  'menu.slide.duplicate': 'Duplicate slide',
+  'menu.slide.delete': 'Delete slide',
+  'menu.slide.previous': 'Previous slide',
+  'menu.slide.next': 'Next slide',
+
+  'menu.arrange.align': 'Align (coming soon)',
+  'menu.arrange.distribute': 'Distribute (coming soon)',
+  'menu.arrange.group': 'Group / Ungroup (coming soon)',
+  'menu.arrange.rotateFlip': 'Rotate / Flip (coming soon)',
+
+  'menu.tools.wordCount': 'Word count (coming soon)',
+  'menu.tools.findReplace': 'Find and replace (coming soon)',
+  'menu.tools.spellCheck': 'Spell check (coming soon)',
+
+  'menu.help.about': 'Slidify {version}',
+  'menu.help.toggleLocale': 'Switch to English / Русский',
+
+  'menu.animation.preset': 'Preset',
+  'menu.animation.trigger': 'Trigger',
 };
 
 const ru: Strings = {
@@ -230,6 +291,67 @@ const ru: Strings = {
   'player.noNotes': 'Заметок нет.',
   'player.notes': 'Заметки',
   'player.exitHint': 'Esc — выйти',
+
+  // menu bar (классическое меню сверху в стиле Google Slides)
+  'menu.file': 'Файл',
+  'menu.edit': 'Правка',
+  'menu.view': 'Вид',
+  'menu.insert': 'Вставка',
+  'menu.format': 'Формат',
+  'menu.slide': 'Слайд',
+  'menu.arrange': 'Расположение',
+  'menu.tools': 'Инструменты',
+  'menu.help': 'Справка',
+  'menu.present.button': 'Показ',
+
+  'menu.file.new': 'Создать',
+  'menu.file.open': 'Открыть…',
+  'menu.file.save': 'Сохранить',
+  'menu.file.saveAs': 'Сохранить как…',
+  'menu.file.importXlsx': 'Импорт XLSX…',
+  'menu.file.importPptx': 'Импорт PPTX… (скоро)',
+  'menu.file.exportPptx': 'Экспорт PPTX… (скоро)',
+  'menu.file.exportPdf': 'Экспорт PDF… (скоро)',
+
+  'menu.edit.undo': 'Отменить',
+  'menu.edit.redo': 'Повторить',
+  'menu.edit.selectAll': 'Выделить всё',
+  'menu.edit.duplicate': 'Дублировать',
+  'menu.edit.delete': 'Удалить',
+
+  'menu.view.zoomIn': 'Увеличить',
+  'menu.view.zoomOut': 'Уменьшить',
+  'menu.view.zoomReset': 'Сбросить масштаб',
+  'menu.view.showAnimations': 'Показать панель анимаций',
+  'menu.view.hideAnimations': 'Скрыть панель анимаций',
+  'menu.view.present': 'Запустить показ',
+  'menu.view.presenter': 'Режим докладчика',
+
+  'menu.insert.shapes': 'Фигуры',
+
+  'menu.format.theme': 'Тема',
+  'menu.format.hint': 'Используйте панель сверху для форматирования.',
+
+  'menu.slide.new': 'Новый слайд',
+  'menu.slide.duplicate': 'Дублировать слайд',
+  'menu.slide.delete': 'Удалить слайд',
+  'menu.slide.previous': 'Предыдущий слайд',
+  'menu.slide.next': 'Следующий слайд',
+
+  'menu.arrange.align': 'Выравнивание (скоро)',
+  'menu.arrange.distribute': 'Распределить (скоро)',
+  'menu.arrange.group': 'Группировать / разгруппировать (скоро)',
+  'menu.arrange.rotateFlip': 'Повернуть / отразить (скоро)',
+
+  'menu.tools.wordCount': 'Подсчёт слов (скоро)',
+  'menu.tools.findReplace': 'Найти и заменить (скоро)',
+  'menu.tools.spellCheck': 'Проверка правописания (скоро)',
+
+  'menu.help.about': 'Slidify {version}',
+  'menu.help.toggleLocale': 'Переключить язык',
+
+  'menu.animation.preset': 'Пресет',
+  'menu.animation.trigger': 'Триггер',
 };
 
 const dictionaries: Record<Locale, Strings> = { ru, en };
