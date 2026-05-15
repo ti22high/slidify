@@ -177,6 +177,19 @@ const en: Strings = {
 
   'menu.animation.preset': 'Preset',
   'menu.animation.trigger': 'Trigger',
+
+  // quick-action toolbar (always-visible shortcuts at the start of FormatBar)
+  'quick.undo': 'Undo (Cmd+Z)',
+  'quick.redo': 'Redo (Cmd+Shift+Z)',
+  'quick.zoom': 'Zoom',
+  'quick.zoomIn': 'Zoom in (Cmd+=)',
+  'quick.zoomOut': 'Zoom out (Cmd+-)',
+  'quick.insertText': 'Insert text box',
+  'quick.insertImage': 'Insert image',
+  'quick.insertShape': 'Insert shape (rectangle)',
+  'quick.insertLine': 'Insert line',
+  'quick.paintFormat': 'Paint format (coming soon)',
+  'quick.comment': 'Add comment (coming soon)',
 };
 
 const ru: Strings = {
@@ -352,6 +365,19 @@ const ru: Strings = {
 
   'menu.animation.preset': 'Пресет',
   'menu.animation.trigger': 'Триггер',
+
+  // quick-action toolbar (постоянные кнопки слева на FormatBar)
+  'quick.undo': 'Отменить (Cmd+Z)',
+  'quick.redo': 'Повторить (Cmd+Shift+Z)',
+  'quick.zoom': 'Масштаб',
+  'quick.zoomIn': 'Увеличить (Cmd+=)',
+  'quick.zoomOut': 'Уменьшить (Cmd+-)',
+  'quick.insertText': 'Вставить текст',
+  'quick.insertImage': 'Вставить изображение',
+  'quick.insertShape': 'Вставить фигуру (прямоугольник)',
+  'quick.insertLine': 'Вставить линию',
+  'quick.paintFormat': 'Копировать формат (скоро)',
+  'quick.comment': 'Добавить комментарий (скоро)',
 };
 
 const dictionaries: Record<Locale, Strings> = { ru, en };

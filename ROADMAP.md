@@ -25,14 +25,14 @@ Google Slides:
 - Notes — только в Inspector справа.
 - Sidebar слайдов слева + Inspector справа.
 
-| Что                                                                                                                             | Статус                                                    | Приоритет              | Усилия  |
-| ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ---------------------- | ------- |
-| **Заменить Ribbon на classic-style menu bar** (File/Edit/View/Insert/Format/Slide/Arrange/Tools/Help) с пунктами как в GSlides  | ✅ есть (PR feat/menu-bar: 9 dropdowns + Present-кнопка)  | —                      | —       |
-| **Сменный toolbar под меню** (Cut/Copy/Paste/Format-painter/Zoom/Background/Layout/Theme/Transition/Insert-image/Shape/Comment) | ⛔ нет                                                    | **P0**                 | 2-3 дня |
-| Notes pane снизу (toggle), не в Inspector                                                                                       | ⛔ нет                                                    | P1                     | 1 день  |
-| Кнопка "Slideshow" / "Present" справа сверху                                                                                    | ✅ есть (в menu bar справа сверху)                        | —                      | —       |
-| Filmstrip слева (миниатюры)                                                                                                     | ✅ есть                                                   | окей                   | —       |
-| Inspector справа                                                                                                                | у нас есть, у GSlides — нет (всё в toolbar или dropdowns) | P2: переосмыслить роль | 1-2 дня |
+| Что                                                                                                                                    | Статус                                                                                    | Приоритет                                                        | Усилия  |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
+| **Заменить Ribbon на classic-style menu bar** (File/Edit/View/Insert/Format/Slide/Arrange/Tools/Help) с пунктами как в GSlides         | ✅ есть (PR feat/menu-bar: 9 dropdowns + Present-кнопка)                                  | —                                                                | —       |
+| **Сменный toolbar под меню** (Undo/Redo/Zoom/Insert-text/image/shape/line + Paint-format/Comment стабы + context-aware форматирование) | ✅ частично (QuickActions слева, context-aware справа; Paint-format / Comment — заглушки) | P1: добавить Print, Spell-check, Background, Layout, Theme-quick | 1 день  |
+| Notes pane снизу (toggle), не в Inspector                                                                                              | ⛔ нет                                                                                    | P1                                                               | 1 день  |
+| Кнопка "Slideshow" / "Present" справа сверху                                                                                           | ✅ есть (в menu bar справа сверху)                                                        | —                                                                | —       |
+| Filmstrip слева (миниатюры)                                                                                                            | ✅ есть                                                                                   | окей                                                             | —       |
+| Inspector справа                                                                                                                       | у нас есть, у GSlides — нет (всё в toolbar или dropdowns)                                 | P2: переосмыслить роль                                           | 1-2 дня |
 
 ---
 

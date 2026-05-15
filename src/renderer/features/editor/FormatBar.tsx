@@ -1,11 +1,20 @@
+import { useRef } from 'react';
 import type { ChartKind } from '../../model/chart';
 import type { Shape, TextAlign, TextBody } from '../../model/shape';
 import { useT } from '../../i18n';
-import { useEditorStore } from '../../store/editorStore';
+import {
+  MAX_ZOOM,
+  MIN_ZOOM,
+  makeShape,
+  makeTextShape,
+  useEditorStore,
+} from '../../store/editorStore';
+import { insertImageFromFile } from '../media/ImageDrop';
 import { addColumn, addRow, removeColumn, removeRow } from '../table/tableOps';
 
 const FONTS = ['Inter', 'Roboto', 'NotoSans', 'Arial', 'Calibri', 'Times New Roman'] as const;
 const SIZES = [8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48, 60, 72];
+const ZOOM_LEVELS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
 /**
  * Docked, context-aware formatting bar under the ribbon. Mirrors the
@@ -39,6 +48,8 @@ export function FormatBar(): JSX.Element {
       }}
       className="flex h-10 items-center gap-1 overflow-x-auto border-b border-slate-800 bg-slate-900/70 px-3 text-xs text-slate-200"
     >
+      <QuickActions t={t} slideId={selectedSlideId} dispatch={dispatch} />
+      <Divider />
       <TextSection shape={shape} slideId={selectedSlideId} dispatch={dispatch} t={t} />
       <Divider />
       {shape ? (
@@ -301,6 +312,122 @@ function Toggle({
       className={`rounded px-2 py-1 text-slate-200 ${
         pressed ? 'bg-sky-600 text-white' : 'hover:bg-slate-800'
       } disabled:cursor-not-allowed disabled:opacity-40 ${className ?? ''}`}
+    >
+      {label}
+    </button>
+  );
+}
+
+/**
+ * Persistent quick-action shortcuts, always visible at the start of the
+ * toolbar — Google Slides style. Undo/Redo, zoom selector, common insert
+ * shortcuts. Format-painter and print are stubs (see ROADMAP §0).
+ */
+function QuickActions({
+  t,
+  slideId,
+  dispatch,
+}: {
+  t: ReturnType<typeof useT>;
+  slideId: string;
+  dispatch: ReturnType<typeof useEditorStore.getState>['dispatch'];
+}): JSX.Element {
+  const zoom = useEditorStore((s) => s.zoom);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const stepZoom = (factor: number) =>
+    dispatch({
+      type: 'zoom/set',
+      value: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom * factor)),
+    });
+  const setZoom = (value: number) => dispatch({ type: 'zoom/set', value });
+
+  const zoomPct = Math.round(zoom * 100);
+  const standardZoom = ZOOM_LEVELS.find((z) => Math.round(z * 100) === zoomPct);
+
+  return (
+    <>
+      <QuickBtn label="↶" title={t('quick.undo')} onClick={() => dispatch({ type: 'undo' })} />
+      <QuickBtn label="↷" title={t('quick.redo')} onClick={() => dispatch({ type: 'redo' })} />
+      <Divider />
+      <QuickBtn label="−" title={t('quick.zoomOut')} onClick={() => stepZoom(1 / 1.1)} />
+      <select
+        aria-label={t('quick.zoom')}
+        title={t('quick.zoom')}
+        value={standardZoom ?? ''}
+        onChange={(e) => setZoom(Number(e.target.value))}
+        className="w-16 rounded border border-slate-700 bg-slate-800 px-1 py-1 text-center text-slate-100"
+      >
+        {!standardZoom ? <option value="">{zoomPct}%</option> : null}
+        {ZOOM_LEVELS.map((z) => (
+          <option key={z} value={z}>
+            {Math.round(z * 100)}%
+          </option>
+        ))}
+      </select>
+      <QuickBtn label="+" title={t('quick.zoomIn')} onClick={() => stepZoom(1.1)} />
+      <Divider />
+      <QuickBtn
+        label="T"
+        title={t('quick.insertText')}
+        onClick={() => {
+          const shape = makeTextShape();
+          dispatch({ type: 'shape/add', slideId, shape });
+          setTimeout(() => dispatch({ type: 'text/edit/start', shapeId: shape.id }), 0);
+        }}
+      />
+      <QuickBtn
+        label="🖼"
+        title={t('quick.insertImage')}
+        onClick={() => fileInputRef.current?.click()}
+      />
+      <QuickBtn
+        label="▭"
+        title={t('quick.insertShape')}
+        onClick={() => dispatch({ type: 'shape/add', slideId, shape: makeShape('rect') })}
+      />
+      <QuickBtn
+        label="／"
+        title={t('quick.insertLine')}
+        onClick={() => dispatch({ type: 'shape/add', slideId, shape: makeShape('line') })}
+      />
+      <QuickBtn label="🖌" title={t('quick.paintFormat')} disabled />
+      <QuickBtn label="💬" title={t('quick.comment')} disabled />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) void insertImageFromFile(file, slideId);
+          e.target.value = '';
+        }}
+      />
+    </>
+  );
+}
+
+function QuickBtn({
+  label,
+  title,
+  onClick,
+  disabled,
+}: {
+  label: string;
+  title: string;
+  onClick?: () => void;
+  disabled?: boolean;
+}): JSX.Element {
+  return (
+    <button
+      type="button"
+      title={title}
+      aria-label={title}
+      disabled={disabled}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className="rounded px-2 py-1 text-slate-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
     >
       {label}
     </button>
