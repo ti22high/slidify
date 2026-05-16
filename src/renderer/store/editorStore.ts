@@ -572,6 +572,36 @@ export const useEditorStore = createStore<EditorStore>((set, get) => ({
   },
 }));
 
+/** Default centred preset shape (rounded-rect, star, arrow, etc.). */
+export function makePresetShape(
+  presetGeom: import('../features/canvas/shapePresets').PresetGeomName,
+): Shape {
+  const w = 3000000;
+  const h = 1800000;
+  return {
+    id: nextShapeId(),
+    kind: 'preset',
+    presetGeom,
+    x: (SLIDE_WIDTH_EMU - w) / 2,
+    y: (SLIDE_HEIGHT_EMU - h) / 2,
+    w,
+    h,
+    rotation: 0,
+    fill: '#cbd5e1',
+    stroke: '#0f172a',
+    strokeWidth: 19050,
+    text: {
+      text: '',
+      fontFamily: 'Inter',
+      fontSize: 18,
+      bold: false,
+      italic: false,
+      color: '#0f172a',
+      align: 'center',
+    },
+  };
+}
+
 /** Default centred shape for the Insert tab. Tables and images use their own factories. */
 export function makeShape(kind: 'rect' | 'ellipse' | 'line' | 'arrow'): Shape {
   const w = 3000000;

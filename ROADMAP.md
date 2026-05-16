@@ -96,26 +96,26 @@ Google Slides:
 - Тень / отражение / recolor — нет.
 - Crop / replace — нет.
 
-| Что                                                                         | Статус                          | Приоритет | Усилия                       |
-| --------------------------------------------------------------------------- | ------------------------------- | --------- | ---------------------------- |
-| **Shape library**: ~30 пресетов (через SVG path data) — это `prstGeom` PPTX | ⛔ только 4                     | **P0**    | 4-5 дней                     |
-| Star, Polygon (n=3..12)                                                     | ⛔ нет                          | P0        | 1 день                       |
-| Rounded rectangle                                                           | ⛔ нет                          | P0        | 0.5 дня                      |
-| Callout shapes (speech bubble, thought, line callout)                       | ⛔ нет                          | P1        | 2 дня                        |
-| Flowchart shapes (15 штук)                                                  | ⛔ нет                          | P1        | 2 дня                        |
-| Elbow / curved / arc lines                                                  | ⛔ нет                          | P1        | 3 дня (connector routing)    |
-| Polyline / open path                                                        | ⛔ нет                          | P2        | 2 дня                        |
-| Arrow head/tail style picker (open/filled/diamond/oval, size)               | ⛔ только filled arrow на конце | P1        | 1 день                       |
-| Pen / freehand drawing tool                                                 | ⛔ нет                          | P2        | 2-3 дня                      |
-| Word Art                                                                    | ⛔ нет                          | P2        | 2 дня (SVG text + path warp) |
-| Diagram / SmartArt                                                          | ⛔ нет                          | P3        | 5-8 дней                     |
-| Drop shadow per shape                                                       | ⛔ нет                          | P1        | 1 день (SVG filter)          |
-| Reflection                                                                  | ⛔ нет                          | P2        | 1 день                       |
-| Image crop (rect + shape mask)                                              | ⛔ нет                          | **P0**    | 2 дня                        |
-| Image replace                                                               | ⛔ нет                          | P1        | 0.5 дня                      |
-| Image recolor (filters: greyscale / sepia / tint)                           | ⛔ нет                          | P2        | 1-2 дня                      |
-| Image transparency adjust                                                   | ✅ есть opacity на shape        | окей      | —                            |
-| Connector lines с автопривязкой к ручкам фигур                              | ⛔ нет                          | P2        | 3 дня                        |
+| Что                                                                         | Статус                                                                                                                                  | Приоритет | Усилия                       |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------- |
+| **Shape library**: ~30 пресетов (через SVG path data) — это `prstGeom` PPTX | ✅ есть (30 пресетов: roundRect/diamond/triangle/poly3-8/star4-8/arrows×8/callouts×2/plus/flowchart×5; Insert→Shape library popup grid) | —         | —                            |
+| Star, Polygon (n=3..12)                                                     | ⛔ нет                                                                                                                                  | P0        | 1 день                       |
+| Rounded rectangle                                                           | ⛔ нет                                                                                                                                  | P0        | 0.5 дня                      |
+| Callout shapes (speech bubble, thought, line callout)                       | ⛔ нет                                                                                                                                  | P1        | 2 дня                        |
+| Flowchart shapes (15 штук)                                                  | ⛔ нет                                                                                                                                  | P1        | 2 дня                        |
+| Elbow / curved / arc lines                                                  | ⛔ нет                                                                                                                                  | P1        | 3 дня (connector routing)    |
+| Polyline / open path                                                        | ⛔ нет                                                                                                                                  | P2        | 2 дня                        |
+| Arrow head/tail style picker (open/filled/diamond/oval, size)               | ⛔ только filled arrow на конце                                                                                                         | P1        | 1 день                       |
+| Pen / freehand drawing tool                                                 | ⛔ нет                                                                                                                                  | P2        | 2-3 дня                      |
+| Word Art                                                                    | ⛔ нет                                                                                                                                  | P2        | 2 дня (SVG text + path warp) |
+| Diagram / SmartArt                                                          | ⛔ нет                                                                                                                                  | P3        | 5-8 дней                     |
+| Drop shadow per shape                                                       | ⛔ нет                                                                                                                                  | P1        | 1 день (SVG filter)          |
+| Reflection                                                                  | ⛔ нет                                                                                                                                  | P2        | 1 день                       |
+| Image crop (rect + shape mask)                                              | ⛔ нет                                                                                                                                  | **P0**    | 2 дня                        |
+| Image replace                                                               | ⛔ нет                                                                                                                                  | P1        | 0.5 дня                      |
+| Image recolor (filters: greyscale / sepia / tint)                           | ⛔ нет                                                                                                                                  | P2        | 1-2 дня                      |
+| Image transparency adjust                                                   | ✅ есть opacity на shape                                                                                                                | окей      | —                            |
+| Connector lines с автопривязкой к ручкам фигур                              | ⛔ нет                                                                                                                                  | P2        | 3 дня                        |
 
 ---
 

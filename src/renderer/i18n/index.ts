@@ -155,6 +155,8 @@ const en: Strings = {
   'menu.view.presenter': 'Presenter view',
 
   'menu.insert.shapes': 'Shapes',
+  'menu.insert.shapeLibrary': 'Shape library…',
+  'shapeLibrary.title': 'Shape library',
 
   'menu.format.theme': 'Theme',
   'menu.format.hint': 'Use the toolbar to format text and shapes.',
@@ -370,6 +372,8 @@ const ru: Strings = {
   'menu.view.presenter': 'Режим докладчика',
 
   'menu.insert.shapes': 'Фигуры',
+  'menu.insert.shapeLibrary': 'Библиотека фигур…',
+  'shapeLibrary.title': 'Библиотека фигур',
 
   'menu.format.theme': 'Тема',
   'menu.format.hint': 'Используйте панель сверху для форматирования.',

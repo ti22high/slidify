@@ -1,5 +1,6 @@
 import { AnimationsPanel } from './AnimationsPanel';
 import { FindReplacePanel } from '../findReplace/FindReplacePanel';
+import { ShapeLibraryPanel } from '../canvas/ShapeLibraryPanel';
 import { FormatBar } from './FormatBar';
 import { Inspector } from './Inspector';
 import { MenuBar } from './MenuBar';
@@ -53,6 +54,7 @@ export function EditorLayout(): JSX.Element {
       <ContextMenu />
       <AnimationsPanel />
       <FindReplacePanel />
+      <ShapeLibraryPanel />
     </div>
   );
 }

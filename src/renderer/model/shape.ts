@@ -6,6 +6,7 @@ export type ShapeKind =
   | 'ellipse'
   | 'line'
   | 'arrow'
+  | 'preset'
   | 'image'
   | 'table'
   | 'data'
@@ -84,6 +85,8 @@ export interface Shape {
   strokeWidth: Emu;
   /** 0..1 — applied as SVG `opacity` on the rendered <g>. Default = 1. */
   opacity?: number;
+  /** Preset geometry name — only meaningful when `kind === 'preset'`. Mirrors PPTX `prstGeom`. */
+  presetGeom?: import('../features/canvas/shapePresets').PresetGeomName;
   text?: TextBody;
   image?: ImagePayload;
   table?: TablePayload;

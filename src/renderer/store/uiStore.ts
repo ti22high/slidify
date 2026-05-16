@@ -11,6 +11,9 @@ interface UiStore {
   /** Whether the Find & replace panel is visible over the editor. */
   findReplaceOpen: boolean;
   setFindReplaceOpen: (open: boolean) => void;
+  /** Whether the Shape library popup is visible over the editor. */
+  shapeLibraryOpen: boolean;
+  setShapeLibraryOpen: (open: boolean) => void;
 }
 
 export const useUiStore = createStore<UiStore>((set) => ({
@@ -21,4 +24,6 @@ export const useUiStore = createStore<UiStore>((set) => ({
   setAnimationsPanel: (open) => set({ animationsPanel: open }),
   findReplaceOpen: false,
   setFindReplaceOpen: (open) => set({ findReplaceOpen: open }),
+  shapeLibraryOpen: false,
+  setShapeLibraryOpen: (open) => set({ shapeLibraryOpen: open }),
 }));

@@ -340,6 +340,7 @@ function InsertMenu(): JSX.Element {
   const t = useT();
   const dispatch = useEditorStore((s) => s.dispatch);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
+  const openShapeLibrary = useUiStore((s) => s.setShapeLibraryOpen);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   return (
@@ -379,6 +380,7 @@ function InsertMenu(): JSX.Element {
           dispatch({ type: 'shape/add', slideId: selectedSlideId, shape: makeShape('arrow') })
         }
       />
+      <Item label={t('menu.insert.shapeLibrary')} onClick={() => openShapeLibrary(true)} />
       <Separator />
       <Item
         label={t('ribbon.insert.table')}

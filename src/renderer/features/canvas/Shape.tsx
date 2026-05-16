@@ -3,6 +3,7 @@ import { useSyncExternalStore } from 'react';
 import { EMU_PER_POINT } from '../../../shared/emu';
 import type { Shape as ShapeModel } from '../../model/shape';
 import { getMediaUrl, subscribeMedia } from '../media/mediaCache';
+import { presetPath } from './shapePresets';
 
 interface Props {
   shape: ShapeModel;
@@ -106,6 +107,19 @@ export function Shape({
           cy={shape.y + shape.h / 2}
           rx={shape.w / 2}
           ry={shape.h / 2}
+          fill={fill}
+          stroke={shape.stroke}
+          strokeWidth={shape.strokeWidth}
+        />
+      );
+      break;
+    }
+    case 'preset': {
+      const d = shape.presetGeom ? presetPath(shape.presetGeom, shape.w, shape.h) : '';
+      body = (
+        <path
+          d={d}
+          transform={`translate(${shape.x} ${shape.y})`}
           fill={fill}
           stroke={shape.stroke}
           strokeWidth={shape.strokeWidth}
