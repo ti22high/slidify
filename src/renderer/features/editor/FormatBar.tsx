@@ -146,6 +146,22 @@ function TextSection({
         onClick={() => patch({ italic: !text?.italic })}
         className="italic"
       />
+      <Toggle
+        label="U"
+        title={t('format.underline')}
+        disabled={!editable}
+        pressed={text?.underline ?? false}
+        onClick={() => patch({ underline: !text?.underline })}
+        className="underline"
+      />
+      <Toggle
+        label="S"
+        title={t('format.strikethrough')}
+        disabled={!editable}
+        pressed={text?.strikethrough ?? false}
+        onClick={() => patch({ strikethrough: !text?.strikethrough })}
+        className="line-through"
+      />
       <label
         title={t('format.color')}
         className={`ml-1 flex items-center gap-1 rounded px-1.5 py-1 ${

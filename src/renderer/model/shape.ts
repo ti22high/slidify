@@ -18,6 +18,10 @@ export interface TextBody {
   fontSize: number;
   bold: boolean;
   italic: boolean;
+  /** Underline the entire run. Defaults to false. */
+  underline?: boolean;
+  /** Strike through the entire run. Defaults to false. */
+  strikethrough?: boolean;
   color: string;
   align: TextAlign;
 }

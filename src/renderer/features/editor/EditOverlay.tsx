@@ -121,6 +121,10 @@ function TextEditor({
         fontSize: `${fontPx}px`,
         fontWeight: text.bold ? 700 : 400,
         fontStyle: text.italic ? 'italic' : 'normal',
+        textDecoration:
+          [text.underline ? 'underline' : null, text.strikethrough ? 'line-through' : null]
+            .filter(Boolean)
+            .join(' ') || undefined,
         textAlign: text.align,
         boxSizing: 'border-box',
         overflow: 'hidden',

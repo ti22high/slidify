@@ -12,6 +12,16 @@ interface Props {
   onDoubleClick?: (e: React.MouseEvent<SVGGElement>) => void;
 }
 
+function textDecorationFor(text: {
+  underline?: boolean;
+  strikethrough?: boolean;
+}): string | undefined {
+  const parts: string[] = [];
+  if (text.underline) parts.push('underline');
+  if (text.strikethrough) parts.push('line-through');
+  return parts.length ? parts.join(' ') : undefined;
+}
+
 function transformFor(shape: ShapeModel): string | undefined {
   const cx = shape.x + shape.w / 2;
   const cy = shape.y + shape.h / 2;
@@ -192,6 +202,7 @@ export function Shape({
           fontSize={text.fontSize * EMU_PER_POINT}
           fontWeight={text.bold ? 700 : 400}
           fontStyle={text.italic ? 'italic' : 'normal'}
+          textDecoration={textDecorationFor(text)}
           fill={text.color}
         >
           {text.text}
