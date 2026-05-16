@@ -211,19 +211,19 @@ Google Slides:
 - Нет theme builder.
 - Background per-slide — только через master.
 
-| Что                                                                                                                      | Статус                  | Приоритет | Усилия                                   |
-| ------------------------------------------------------------------------------------------------------------------------ | ----------------------- | --------- | ---------------------------------------- |
-| **11 встроенных layouts** (Title, Title+body, Section, Two columns, Caption, Blank, Centered, Title-content, Comparison) | ⛔ только Blank         | **P0**    | 3-4 дня (layout-shapes-placeholder + UI) |
-| Layout picker на новом слайде                                                                                            | ⛔ нет                  | P0        | 1 день                                   |
-| Apply / Reset layout                                                                                                     | ⛔ нет                  | P1        | 1 день                                   |
-| Theme apply: фон + accent + heading-font + body-font во все шейпы                                                        | партиально (только фон) | **P0**    | 2 дня                                    |
-| Background image per-slide                                                                                               | ⛔ нет (только фон)     | P1        | 1 день                                   |
-| Master / theme editor view (View → Master)                                                                               | ⛔ нет                  | P2        | 4-5 дней                                 |
-| Custom theme upload                                                                                                      | ⛔ нет                  | P3        | 2 дня                                    |
-| Slide numbering (Insert → Slide number)                                                                                  | ⛔ нет                  | P1        | 0.5 дня                                  |
-| Headers / footers                                                                                                        | ⛔ нет                  | P1        | 1 день                                   |
-| Date placeholder                                                                                                         | ⛔ нет                  | P1        | 0.5 дня                                  |
-| Hide slide (skip during presentation)                                                                                    | ⛔ нет                  | P1        | 0.5 дня                                  |
+| Что                                                                                                                                              | Статус                                                       | Приоритет | Усилия   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | --------- | -------- |
+| **11 встроенных layouts** (Title, Title+body, Section, Two columns, Caption, Blank, Centered, Title-content, Comparison, Big number, Title-only) | ✅ есть (builtinLayouts.ts, 11 layouts с ghost placeholders) | —         | —        |
+| Layout picker (Slide → Apply layout)                                                                                                             | ✅ есть (dropdown в Slide menu, dispatch slide/setLayout)    | —         | —        |
+| Apply / Reset layout                                                                                                                             | ⛔ нет                                                       | P1        | 1 день   |
+| Theme apply: фон + accent + heading-font + body-font во все шейпы                                                                                | партиально (только фон)                                      | **P0**    | 2 дня    |
+| Background image per-slide                                                                                                                       | ⛔ нет (только фон)                                          | P1        | 1 день   |
+| Master / theme editor view (View → Master)                                                                                                       | ⛔ нет                                                       | P2        | 4-5 дней |
+| Custom theme upload                                                                                                                              | ⛔ нет                                                       | P3        | 2 дня    |
+| Slide numbering (Insert → Slide number)                                                                                                          | ⛔ нет                                                       | P1        | 0.5 дня  |
+| Headers / footers                                                                                                                                | ⛔ нет                                                       | P1        | 1 день   |
+| Date placeholder                                                                                                                                 | ⛔ нет                                                       | P1        | 0.5 дня  |
+| Hide slide (skip during presentation)                                                                                                            | ⛔ нет                                                       | P1        | 0.5 дня  |
 
 ---
 

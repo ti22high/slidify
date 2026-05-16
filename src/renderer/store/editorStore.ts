@@ -1,8 +1,8 @@
 import { create as mutate } from 'mutative';
 import { create as createStore } from 'zustand';
 import { SLIDE_HEIGHT_EMU, SLIDE_WIDTH_EMU } from '../../shared/emu';
-import { DEFAULT_LAYOUT, type SlideLayout } from '../model/layout';
-import { DEFAULT_LAYOUT_ID } from '../model/layout';
+import { type SlideLayout } from '../model/layout';
+import { BUILTIN_LAYOUTS, DEFAULT_LAYOUT_ID } from '../model/builtinLayouts';
 import { DEFAULT_MASTER, type SlideMaster } from '../model/master';
 import type { Shape, ShapeId, TextBody } from '../model/shape';
 import type { Slide, SlideId } from '../model/slide';
@@ -41,6 +41,7 @@ export type Action =
   | { type: 'slide/delete'; slideId: SlideId }
   | { type: 'slide/duplicate'; slideId: SlideId }
   | { type: 'slide/reorder'; fromIndex: number; toIndex: number }
+  | { type: 'slide/setLayout'; slideId: SlideId; layoutId: string }
   | { type: 'zoom/set'; value: number }
   | { type: 'shape/add'; slideId: SlideId; shape: Shape }
   | { type: 'shape/update'; slideId: SlideId; shapeId: ShapeId; patch: Partial<Shape> }
@@ -116,6 +117,7 @@ export function isDocumentMutating(action: Action): boolean {
     case 'slide/delete':
     case 'slide/duplicate':
     case 'slide/reorder':
+    case 'slide/setLayout':
     case 'shape/add':
     case 'shape/update':
     case 'shape/delete':
@@ -164,7 +166,7 @@ const INITIAL_SLIDE: Slide = {
 
 export const initialState: EditorState = {
   masters: [DEFAULT_MASTER],
-  layouts: [DEFAULT_LAYOUT],
+  layouts: BUILTIN_LAYOUTS,
   slides: [INITIAL_SLIDE],
   selectedSlideId: INITIAL_SLIDE.id,
   selectedShapeIds: [],
@@ -264,6 +266,14 @@ export function reduce(state: EditorState, action: Action): EditorState {
         }
         const [moved] = draft.slides.splice(fromIndex, 1);
         if (moved) draft.slides.splice(toIndex, 0, moved);
+        return;
+      }
+      case 'slide/setLayout': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        if (draft.layouts.some((l) => l.id === action.layoutId)) {
+          slide.layoutId = action.layoutId;
+        }
         return;
       }
       case 'zoom/set': {

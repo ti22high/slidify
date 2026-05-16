@@ -474,6 +474,8 @@ function SlideMenu(): JSX.Element {
   const dispatch = useEditorStore((s) => s.dispatch);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const slides = useEditorStore((s) => s.slides);
+  const layouts = useEditorStore((s) => s.layouts);
+  const currentLayoutId = slides.find((s) => s.id === selectedSlideId)?.layoutId;
   const idx = slides.findIndex((s) => s.id === selectedSlideId);
   const hasPrev = idx > 0;
   const hasNext = idx < slides.length - 1;
@@ -494,6 +496,27 @@ function SlideMenu(): JSX.Element {
         disabled={slides.length <= 1}
         onClick={() => dispatch({ type: 'slide/delete', slideId: selectedSlideId })}
       />
+      <Separator />
+      <SectionLabel label={t('menu.slide.applyLayout')} />
+      {layouts.map((l) => {
+        const active = l.id === currentLayoutId;
+        return (
+          <button
+            key={l.id}
+            type="button"
+            role="menuitem"
+            onClick={() =>
+              dispatch({ type: 'slide/setLayout', slideId: selectedSlideId, layoutId: l.id })
+            }
+            className={`flex w-full items-center justify-between px-3 py-1.5 text-left ${
+              active ? 'text-white' : 'text-slate-200'
+            } hover:bg-slate-800 hover:text-white`}
+          >
+            <span>{l.name}</span>
+            {active ? <span className="text-[10px] text-sky-400">●</span> : null}
+          </button>
+        );
+      })}
       <Separator />
       <Item
         label={t('menu.slide.previous')}

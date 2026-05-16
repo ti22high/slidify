@@ -158,6 +158,7 @@ const en: Strings = {
   'menu.format.theme': 'Theme',
   'menu.format.hint': 'Use the toolbar to format text and shapes.',
 
+  'menu.slide.applyLayout': 'Apply layout',
   'menu.slide.new': 'New slide',
   'menu.slide.duplicate': 'Duplicate slide',
   'menu.slide.delete': 'Delete slide',
@@ -371,6 +372,7 @@ const ru: Strings = {
   'menu.format.theme': 'Тема',
   'menu.format.hint': 'Используйте панель сверху для форматирования.',
 
+  'menu.slide.applyLayout': 'Применить макет',
   'menu.slide.new': 'Новый слайд',
   'menu.slide.duplicate': 'Дублировать слайд',
   'menu.slide.delete': 'Удалить слайд',
