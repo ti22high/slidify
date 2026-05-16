@@ -3,6 +3,7 @@ import {
   alignShapes,
   boundingBox,
   distributeShapes,
+  flipShapes,
   rotateByDegrees,
 } from '../../src/renderer/features/arrange/arrange';
 import type { Shape } from '../../src/renderer/model/shape';
@@ -168,5 +169,46 @@ describe('editorStore arrange actions', () => {
     const shapes = next.slides.find((s) => s.id === slideId)!.shapes;
     expect(shapes[0]!.rotation).toBe(90);
     expect(shapes[1]!.rotation).toBe(90);
+  });
+
+  it('arrange/flip toggles flipH/flipV independently per axis', () => {
+    const { state, slideId } = withTwoShapes();
+    const flippedH = reduce(state, {
+      type: 'arrange/flip',
+      slideId,
+      shapeIds: ['a', 'b'],
+      axis: 'h',
+    });
+    const sH = flippedH.slides.find((s) => s.id === slideId)!.shapes;
+    expect(sH[0]!.flipH).toBe(true);
+    expect(sH[1]!.flipH).toBe(true);
+    expect(sH[0]!.flipV).toBeUndefined();
+    // Flip H again should toggle back off.
+    const back = reduce(flippedH, {
+      type: 'arrange/flip',
+      slideId,
+      shapeIds: ['a', 'b'],
+      axis: 'h',
+    });
+    expect(back.slides.find((s) => s.id === slideId)!.shapes[0]!.flipH).toBe(false);
+  });
+});
+
+describe('flipShapes', () => {
+  it('toggles flipH for axis h, leaving flipV alone', () => {
+    const out = flipShapes(
+      [
+        { ...mk('a', 0, 0), flipH: false, flipV: true },
+        { ...mk('b', 0, 0), flipH: true },
+      ],
+      'h',
+    );
+    expect(out[0]).toEqual({ id: 'a', flipH: true });
+    expect(out[1]).toEqual({ id: 'b', flipH: false });
+  });
+
+  it('toggles flipV for axis v', () => {
+    const out = flipShapes([{ ...mk('a', 0, 0), flipV: undefined }], 'v');
+    expect(out[0]).toEqual({ id: 'a', flipV: true });
   });
 });

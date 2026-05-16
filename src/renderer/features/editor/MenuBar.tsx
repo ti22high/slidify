@@ -615,10 +615,33 @@ function ArrangeMenu(): JSX.Element {
         disabled={noSelection}
         onClick={() => rotate(-90)}
       />
+      <Item
+        label={t('menu.arrange.flipH')}
+        disabled={noSelection}
+        onClick={() =>
+          dispatch({
+            type: 'arrange/flip',
+            slideId: selectedSlideId,
+            shapeIds: selectedShapeIds,
+            axis: 'h',
+          })
+        }
+      />
+      <Item
+        label={t('menu.arrange.flipV')}
+        disabled={noSelection}
+        onClick={() =>
+          dispatch({
+            type: 'arrange/flip',
+            slideId: selectedSlideId,
+            shapeIds: selectedShapeIds,
+            axis: 'v',
+          })
+        }
+      />
       <Separator />
-      {/* TODO: Group / Ungroup + Flip H/V — see ROADMAP §6 (model changes pending). */}
+      {/* TODO: Group / Ungroup — see ROADMAP §6 (needs composite-shape model). */}
       <Item label={t('menu.arrange.group')} disabled />
-      <Item label={t('menu.arrange.flip')} disabled />
     </>
   );
 }

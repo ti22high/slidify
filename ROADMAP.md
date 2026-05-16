@@ -258,7 +258,7 @@ Google Slides:
 | **Distribute**: horizontal / vertical                                               | ✅ есть (Arrange → Distribute, dispatch arrange/distribute) | —         | —                             |
 | **Group / Ungroup** (Cmd+G / Cmd+Shift+G)                                           | ⛔ нет                                                      | **P0**    | 2 дня (модель group + render) |
 | Rotate 90° CW/CCW                                                                   | ✅ есть (Arrange → Rotate, dispatch arrange/rotateBy)       | —         | —                             |
-| Flip H/V                                                                            | ⛔ нет (нужны поля flipH/flipV в Shape)                     | P0        | 0.5 дня                       |
+| Flip H/V                                                                            | ✅ есть (поля flipH/flipV в Shape, Arrange → Flip H/V)      | —         | —                             |
 | **Smart guides** (snap к границам / центрам других фигур) при drag                  | ⛔ нет                                                      | **P0**    | 2-3 дня                       |
 | Snap to grid (toggle)                                                               | ⛔ нет                                                      | P1        | 0.5 дня                       |
 | Snap to guides (user-defined guides)                                                | ⛔ нет                                                      | P2        | 1 день                        |

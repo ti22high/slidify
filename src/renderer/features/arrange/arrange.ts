@@ -85,6 +85,18 @@ export function rotateByDegrees(
   }));
 }
 
+export type FlipAxis = 'h' | 'v';
+
+/** Toggle flipH or flipV on each shape. */
+export function flipShapes(
+  shapes: Shape[],
+  axis: FlipAxis,
+): { id: string; flipH?: boolean; flipV?: boolean }[] {
+  return shapes.map((s) =>
+    axis === 'h' ? { id: s.id, flipH: !s.flipH } : { id: s.id, flipV: !s.flipV },
+  );
+}
+
 export function boundingBox(shapes: Shape[]): { x: number; y: number; w: number; h: number } {
   if (shapes.length === 0) return { x: 0, y: 0, w: 0, h: 0 };
   let minX = Infinity;

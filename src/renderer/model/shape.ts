@@ -71,6 +71,10 @@ export interface Shape {
   w: Emu;
   h: Emu;
   rotation: number;
+  /** Mirror horizontally around the shape's vertical centerline (GSlides / PPTX `flipH`). */
+  flipH?: boolean;
+  /** Mirror vertically around the shape's horizontal centerline (GSlides / PPTX `flipV`). */
+  flipV?: boolean;
   fill: string;
   stroke: string;
   strokeWidth: Emu;

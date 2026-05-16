@@ -6,7 +6,12 @@ import { DEFAULT_LAYOUT_ID } from '../model/layout';
 import { DEFAULT_MASTER, type SlideMaster } from '../model/master';
 import type { Shape, ShapeId, TextBody } from '../model/shape';
 import type { Slide, SlideId } from '../model/slide';
-import { alignShapes, distributeShapes, rotateByDegrees } from '../features/arrange/arrange';
+import {
+  alignShapes,
+  distributeShapes,
+  flipShapes,
+  rotateByDegrees,
+} from '../features/arrange/arrange';
 import {
   canRedo as canRedoStack,
   canUndo as canUndoStack,
@@ -78,6 +83,12 @@ export type Action =
       mode: import('../features/arrange/arrange').DistributeMode;
     }
   | { type: 'arrange/rotateBy'; slideId: SlideId; shapeIds: ShapeId[]; delta: number }
+  | {
+      type: 'arrange/flip';
+      slideId: SlideId;
+      shapeIds: ShapeId[];
+      axis: import('../features/arrange/arrange').FlipAxis;
+    }
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'state/replace'; state: EditorState };
@@ -103,6 +114,7 @@ export function isDocumentMutating(action: Action): boolean {
     case 'arrange/align':
     case 'arrange/distribute':
     case 'arrange/rotateBy':
+    case 'arrange/flip':
       return true;
     default:
       return false;
@@ -404,6 +416,20 @@ export function reduce(state: EditorState, action: Action): EditorState {
         for (const sh of slide.shapes) {
           const r = byId.get(sh.id);
           if (r !== undefined) sh.rotation = r;
+        }
+        return;
+      }
+      case 'arrange/flip': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        const targets = slide.shapes.filter((s) => action.shapeIds.includes(s.id));
+        const patches = flipShapes(targets, action.axis);
+        const byId = new Map(patches.map((p) => [p.id, p]));
+        for (const sh of slide.shapes) {
+          const p = byId.get(sh.id);
+          if (!p) continue;
+          if (action.axis === 'h') sh.flipH = p.flipH;
+          else sh.flipV = p.flipV;
         }
         return;
       }

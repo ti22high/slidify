@@ -177,8 +177,9 @@ const en: Strings = {
   'menu.arrange.rotate': 'Rotate',
   'menu.arrange.rotateCw': 'Rotate 90° clockwise',
   'menu.arrange.rotateCcw': 'Rotate 90° counter-clockwise',
+  'menu.arrange.flipH': 'Flip horizontal',
+  'menu.arrange.flipV': 'Flip vertical',
   'menu.arrange.group': 'Group / Ungroup (coming soon)',
-  'menu.arrange.flip': 'Flip horizontal / vertical (coming soon)',
 
   'menu.tools.wordCount': 'Word count (coming soon)',
   'menu.tools.findReplace': 'Find and replace (coming soon)',
@@ -377,8 +378,9 @@ const ru: Strings = {
   'menu.arrange.rotate': 'Поворот',
   'menu.arrange.rotateCw': 'Повернуть 90° по часовой',
   'menu.arrange.rotateCcw': 'Повернуть 90° против часовой',
+  'menu.arrange.flipH': 'Отразить по горизонтали',
+  'menu.arrange.flipV': 'Отразить по вертикали',
   'menu.arrange.group': 'Группировать / разгруппировать (скоро)',
-  'menu.arrange.flip': 'Отразить по горизонтали / вертикали (скоро)',
 
   'menu.tools.wordCount': 'Подсчёт слов (скоро)',
   'menu.tools.findReplace': 'Найти и заменить (скоро)',

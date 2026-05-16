@@ -13,8 +13,17 @@ interface Props {
 }
 
 function transformFor(shape: ShapeModel): string | undefined {
-  if (!shape.rotation) return undefined;
-  return `rotate(${shape.rotation} ${shape.x + shape.w / 2} ${shape.y + shape.h / 2})`;
+  const cx = shape.x + shape.w / 2;
+  const cy = shape.y + shape.h / 2;
+  const parts: string[] = [];
+  if (shape.rotation) parts.push(`rotate(${shape.rotation} ${cx} ${cy})`);
+  if (shape.flipH || shape.flipV) {
+    const sx = shape.flipH ? -1 : 1;
+    const sy = shape.flipV ? -1 : 1;
+    // Mirror around (cx, cy): translate to centre, scale, translate back.
+    parts.push(`translate(${cx} ${cy}) scale(${sx} ${sy}) translate(${-cx} ${-cy})`);
+  }
+  return parts.length ? parts.join(' ') : undefined;
 }
 
 function ImageBody({
