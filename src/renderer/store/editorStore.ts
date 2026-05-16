@@ -6,6 +6,7 @@ import { DEFAULT_LAYOUT_ID } from '../model/layout';
 import { DEFAULT_MASTER, type SlideMaster } from '../model/master';
 import type { Shape, ShapeId, TextBody } from '../model/shape';
 import type { Slide, SlideId } from '../model/slide';
+import { alignShapes, distributeShapes, rotateByDegrees } from '../features/arrange/arrange';
 import {
   canRedo as canRedoStack,
   canUndo as canUndoStack,
@@ -64,6 +65,19 @@ export type Action =
       shapeId: ShapeId;
       index: number;
     }
+  | {
+      type: 'arrange/align';
+      slideId: SlideId;
+      shapeIds: ShapeId[];
+      mode: import('../features/arrange/arrange').AlignMode;
+    }
+  | {
+      type: 'arrange/distribute';
+      slideId: SlideId;
+      shapeIds: ShapeId[];
+      mode: import('../features/arrange/arrange').DistributeMode;
+    }
+  | { type: 'arrange/rotateBy'; slideId: SlideId; shapeIds: ShapeId[]; delta: number }
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'state/replace'; state: EditorState };
@@ -86,6 +100,9 @@ export function isDocumentMutating(action: Action): boolean {
     case 'theme/apply':
     case 'shape/animation/add':
     case 'shape/animation/remove':
+    case 'arrange/align':
+    case 'arrange/distribute':
+    case 'arrange/rotateBy':
       return true;
     default:
       return false;
@@ -345,6 +362,48 @@ export function reduce(state: EditorState, action: Action): EditorState {
         if (shape && shape.animations) {
           shape.animations.splice(action.index, 1);
           if (shape.animations.length === 0) delete shape.animations;
+        }
+        return;
+      }
+      case 'arrange/align': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        const targets = slide.shapes.filter((s) => action.shapeIds.includes(s.id));
+        const patches = alignShapes(targets, action.mode);
+        const byId = new Map(patches.map((p) => [p.id, p.patch]));
+        for (const sh of slide.shapes) {
+          const p = byId.get(sh.id);
+          if (p) {
+            sh.x = p.x;
+            sh.y = p.y;
+          }
+        }
+        return;
+      }
+      case 'arrange/distribute': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        const targets = slide.shapes.filter((s) => action.shapeIds.includes(s.id));
+        const patches = distributeShapes(targets, action.mode);
+        const byId = new Map(patches.map((p) => [p.id, p.patch]));
+        for (const sh of slide.shapes) {
+          const p = byId.get(sh.id);
+          if (p) {
+            sh.x = p.x;
+            sh.y = p.y;
+          }
+        }
+        return;
+      }
+      case 'arrange/rotateBy': {
+        const slide = findSlide(draft.slides, action.slideId);
+        if (!slide) return;
+        const targets = slide.shapes.filter((s) => action.shapeIds.includes(s.id));
+        const patches = rotateByDegrees(targets, action.delta);
+        const byId = new Map(patches.map((p) => [p.id, p.rotation]));
+        for (const sh of slide.shapes) {
+          const r = byId.get(sh.id);
+          if (r !== undefined) sh.rotation = r;
         }
         return;
       }

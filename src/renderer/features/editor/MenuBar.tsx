@@ -519,7 +519,9 @@ function ArrangeMenu(): JSX.Element {
   const dispatch = useEditorStore((s) => s.dispatch);
   const selectedSlideId = useEditorStore((s) => s.selectedSlideId);
   const selectedShapeIds = useEditorStore((s) => s.selectedShapeIds);
-  const disabled = selectedShapeIds.length === 0;
+  const noSelection = selectedShapeIds.length === 0;
+  const lessThan2 = selectedShapeIds.length < 2;
+  const lessThan3 = selectedShapeIds.length < 3;
 
   const zorder = (to: 'front' | 'forward' | 'backward' | 'back') =>
     dispatch({
@@ -528,19 +530,95 @@ function ArrangeMenu(): JSX.Element {
       shapeIds: selectedShapeIds,
       to,
     });
+  const align = (mode: 'left' | 'centerH' | 'right' | 'top' | 'middleV' | 'bottom') =>
+    dispatch({
+      type: 'arrange/align',
+      slideId: selectedSlideId,
+      shapeIds: selectedShapeIds,
+      mode,
+    });
+  const distribute = (mode: 'horizontal' | 'vertical') =>
+    dispatch({
+      type: 'arrange/distribute',
+      slideId: selectedSlideId,
+      shapeIds: selectedShapeIds,
+      mode,
+    });
+  const rotate = (delta: number) =>
+    dispatch({
+      type: 'arrange/rotateBy',
+      slideId: selectedSlideId,
+      shapeIds: selectedShapeIds,
+      delta,
+    });
 
   return (
     <>
-      <Item label={t('ctx.bringFront')} disabled={disabled} onClick={() => zorder('front')} />
-      <Item label={t('ctx.bringForward')} disabled={disabled} onClick={() => zorder('forward')} />
-      <Item label={t('ctx.sendBackward')} disabled={disabled} onClick={() => zorder('backward')} />
-      <Item label={t('ctx.sendBack')} disabled={disabled} onClick={() => zorder('back')} />
+      <SectionLabel label={t('menu.arrange.order')} />
+      <Item label={t('ctx.bringFront')} disabled={noSelection} onClick={() => zorder('front')} />
+      <Item
+        label={t('ctx.bringForward')}
+        disabled={noSelection}
+        onClick={() => zorder('forward')}
+      />
+      <Item
+        label={t('ctx.sendBackward')}
+        disabled={noSelection}
+        onClick={() => zorder('backward')}
+      />
+      <Item label={t('ctx.sendBack')} disabled={noSelection} onClick={() => zorder('back')} />
       <Separator />
-      {/* TODO: Align / Distribute / Group / Rotate / Flip — see ROADMAP §6 (all P0, not wired). */}
-      <Item label={t('menu.arrange.align')} disabled />
-      <Item label={t('menu.arrange.distribute')} disabled />
+      <SectionLabel label={t('menu.arrange.align')} />
+      <Item
+        label={t('menu.arrange.alignLeft')}
+        disabled={lessThan2}
+        onClick={() => align('left')}
+      />
+      <Item
+        label={t('menu.arrange.alignCenterH')}
+        disabled={lessThan2}
+        onClick={() => align('centerH')}
+      />
+      <Item
+        label={t('menu.arrange.alignRight')}
+        disabled={lessThan2}
+        onClick={() => align('right')}
+      />
+      <Item label={t('menu.arrange.alignTop')} disabled={lessThan2} onClick={() => align('top')} />
+      <Item
+        label={t('menu.arrange.alignMiddleV')}
+        disabled={lessThan2}
+        onClick={() => align('middleV')}
+      />
+      <Item
+        label={t('menu.arrange.alignBottom')}
+        disabled={lessThan2}
+        onClick={() => align('bottom')}
+      />
+      <Separator />
+      <SectionLabel label={t('menu.arrange.distribute')} />
+      <Item
+        label={t('menu.arrange.distributeH')}
+        disabled={lessThan3}
+        onClick={() => distribute('horizontal')}
+      />
+      <Item
+        label={t('menu.arrange.distributeV')}
+        disabled={lessThan3}
+        onClick={() => distribute('vertical')}
+      />
+      <Separator />
+      <SectionLabel label={t('menu.arrange.rotate')} />
+      <Item label={t('menu.arrange.rotateCw')} disabled={noSelection} onClick={() => rotate(90)} />
+      <Item
+        label={t('menu.arrange.rotateCcw')}
+        disabled={noSelection}
+        onClick={() => rotate(-90)}
+      />
+      <Separator />
+      {/* TODO: Group / Ungroup + Flip H/V — see ROADMAP §6 (model changes pending). */}
       <Item label={t('menu.arrange.group')} disabled />
-      <Item label={t('menu.arrange.rotateFlip')} disabled />
+      <Item label={t('menu.arrange.flip')} disabled />
     </>
   );
 }
