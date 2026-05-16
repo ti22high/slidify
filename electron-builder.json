@@ -21,7 +21,6 @@
         "arch": ["x64"]
       }
     ],
-    "icon": "assets/icons/icon.ico",
     "artifactName": "Slidify-${version}.exe"
   },
   "portable": {
@@ -29,7 +28,6 @@
   },
   "mac": {
     "target": "dmg",
-    "icon": "assets/icons/icon.icns",
     "artifactName": "Slidify-${version}.dmg"
   },
   "publish": null
