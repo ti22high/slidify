@@ -441,7 +441,16 @@ function FormatMenu(): JSX.Element {
             key={theme.id}
             type="button"
             role="menuitem"
-            onClick={() => dispatch({ type: 'theme/apply', background: theme.background })}
+            onClick={() =>
+              dispatch({
+                type: 'theme/apply',
+                background: theme.background,
+                accent: theme.accent,
+                text: theme.text,
+                headingFont: theme.headingFont,
+                bodyFont: theme.bodyFont,
+              })
+            }
             className={`flex w-full items-center gap-2 px-3 py-1.5 text-left hover:bg-slate-800 ${
               active ? 'text-white' : 'text-slate-200'
             }`}

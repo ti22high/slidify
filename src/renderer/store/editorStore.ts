@@ -58,7 +58,17 @@ export type Action =
   | { type: 'text/update'; slideId: SlideId; shapeId: ShapeId; patch: Partial<TextBody> }
   | { type: 'text/edit/start'; shapeId: ShapeId }
   | { type: 'text/edit/end' }
-  | { type: 'theme/apply'; background: string }
+  | {
+      type: 'theme/apply';
+      background: string;
+      /** Optional — applied to every shape `text.color` and stroke that previously matched the old accent. */
+      accent?: string;
+      /** Optional text colour applied to every shape `text.color`. */
+      text?: string;
+      /** Optional fonts applied across slides. */
+      headingFont?: string;
+      bodyFont?: string;
+    }
   | {
       type: 'shape/animation/add';
       slideId: SlideId;
@@ -381,6 +391,18 @@ export function reduce(state: EditorState, action: Action): EditorState {
       case 'theme/apply': {
         if (draft.masters[0]) {
           draft.masters[0].background = action.background;
+        }
+        // Propagate optional accent / text colour / fonts into every slide shape.
+        // Headings (bold text) get the heading font; non-bold text gets the body font.
+        for (const slide of draft.slides) {
+          for (const shape of slide.shapes) {
+            if (shape.text) {
+              if (action.text) shape.text.color = action.text;
+              if (action.headingFont && shape.text.bold) shape.text.fontFamily = action.headingFont;
+              if (action.bodyFont && !shape.text.bold) shape.text.fontFamily = action.bodyFont;
+            }
+            if (action.accent && shape.fill === 'accent') shape.fill = action.accent;
+          }
         }
         return;
       }
