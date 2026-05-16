@@ -89,6 +89,19 @@ export type Action =
       shapeIds: ShapeId[];
       axis: import('../features/arrange/arrange').FlipAxis;
     }
+  | {
+      /**
+       * Batched text replacement across many shapes/slides. Produces one
+       * undo step regardless of how many shapes are touched.
+       */
+      type: 'findReplace/replaceAll';
+      patches: {
+        slideId: SlideId;
+        shapeId: ShapeId;
+        text?: string;
+        table?: { row: number; col: number; text: string }[];
+      }[];
+    }
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'state/replace'; state: EditorState };
@@ -115,6 +128,7 @@ export function isDocumentMutating(action: Action): boolean {
     case 'arrange/distribute':
     case 'arrange/rotateBy':
     case 'arrange/flip':
+    case 'findReplace/replaceAll':
       return true;
     default:
       return false;
@@ -430,6 +444,25 @@ export function reduce(state: EditorState, action: Action): EditorState {
           if (!p) continue;
           if (action.axis === 'h') sh.flipH = p.flipH;
           else sh.flipV = p.flipV;
+        }
+        return;
+      }
+      case 'findReplace/replaceAll': {
+        const slidesById = new Map(draft.slides.map((s) => [s.id, s]));
+        for (const p of action.patches) {
+          const slide = slidesById.get(p.slideId);
+          if (!slide) continue;
+          const shape = slide.shapes.find((s) => s.id === p.shapeId);
+          if (!shape) continue;
+          if (p.text !== undefined && shape.text) {
+            shape.text.text = p.text;
+          }
+          if (p.table && shape.table) {
+            for (const c of p.table) {
+              const cell = shape.table.cells[c.row]?.[c.col];
+              if (cell) cell.text = c.text;
+            }
+          }
         }
         return;
       }

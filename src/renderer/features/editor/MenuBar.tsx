@@ -235,6 +235,7 @@ function EditMenu(): JSX.Element {
   const slides = useEditorStore((s) => s.slides);
   const slide = slides.find((s) => s.id === selectedSlideId);
   const someSelected = selectedShapeIds.length > 0;
+  const openFindReplace = useUiStore((s) => s.setFindReplaceOpen);
 
   return (
     <>
@@ -276,6 +277,12 @@ function EditMenu(): JSX.Element {
           })
         }
         shortcut="Del"
+      />
+      <Separator />
+      <Item
+        label={t('menu.edit.findReplace')}
+        onClick={() => openFindReplace(true)}
+        shortcut={`${CMD}+F`}
       />
     </>
   );
@@ -652,10 +659,15 @@ function ArrangeMenu(): JSX.Element {
 
 function ToolsMenu(): JSX.Element {
   const t = useT();
+  const openFindReplace = useUiStore((s) => s.setFindReplaceOpen);
   return (
     <>
       <Item label={t('menu.tools.wordCount')} disabled />
-      <Item label={t('menu.tools.findReplace')} disabled />
+      <Item
+        label={t('menu.tools.findReplace')}
+        onClick={() => openFindReplace(true)}
+        shortcut={`${CMD}+F`}
+      />
       <Item label={t('menu.tools.spellCheck')} disabled />
     </>
   );

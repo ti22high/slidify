@@ -143,6 +143,7 @@ const en: Strings = {
   'menu.edit.selectAll': 'Select all',
   'menu.edit.duplicate': 'Duplicate',
   'menu.edit.delete': 'Delete',
+  'menu.edit.findReplace': 'Find and replace…',
 
   'menu.view.zoomIn': 'Zoom in',
   'menu.view.zoomOut': 'Zoom out',
@@ -182,7 +183,7 @@ const en: Strings = {
   'menu.arrange.group': 'Group / Ungroup (coming soon)',
 
   'menu.tools.wordCount': 'Word count (coming soon)',
-  'menu.tools.findReplace': 'Find and replace (coming soon)',
+  'menu.tools.findReplace': 'Find and replace…',
   'menu.tools.spellCheck': 'Spell check (coming soon)',
 
   'menu.help.about': 'Slidify {version}',
@@ -203,6 +204,17 @@ const en: Strings = {
   'quick.insertLine': 'Insert line',
   'quick.paintFormat': 'Paint format (coming soon)',
   'quick.comment': 'Add comment (coming soon)',
+
+  // Find & replace panel
+  'findReplace.title': 'Find and replace',
+  'findReplace.find': 'Find',
+  'findReplace.replace': 'Replace with',
+  'findReplace.matchCase': 'Match case',
+  'findReplace.next': 'Next',
+  'findReplace.prev': 'Prev',
+  'findReplace.replaceAll': 'Replace all',
+  'findReplace.noMatches': 'No matches',
+  'findReplace.indexOf': '{index} of {total}',
 };
 
 const ru: Strings = {
@@ -344,6 +356,7 @@ const ru: Strings = {
   'menu.edit.selectAll': 'Выделить всё',
   'menu.edit.duplicate': 'Дублировать',
   'menu.edit.delete': 'Удалить',
+  'menu.edit.findReplace': 'Найти и заменить…',
 
   'menu.view.zoomIn': 'Увеличить',
   'menu.view.zoomOut': 'Уменьшить',
@@ -383,7 +396,7 @@ const ru: Strings = {
   'menu.arrange.group': 'Группировать / разгруппировать (скоро)',
 
   'menu.tools.wordCount': 'Подсчёт слов (скоро)',
-  'menu.tools.findReplace': 'Найти и заменить (скоро)',
+  'menu.tools.findReplace': 'Найти и заменить…',
   'menu.tools.spellCheck': 'Проверка правописания (скоро)',
 
   'menu.help.about': 'Slidify {version}',
@@ -404,6 +417,17 @@ const ru: Strings = {
   'quick.insertLine': 'Вставить линию',
   'quick.paintFormat': 'Копировать формат (скоро)',
   'quick.comment': 'Добавить комментарий (скоро)',
+
+  // Find & replace panel
+  'findReplace.title': 'Найти и заменить',
+  'findReplace.find': 'Найти',
+  'findReplace.replace': 'Заменить на',
+  'findReplace.matchCase': 'Учитывать регистр',
+  'findReplace.next': 'Далее',
+  'findReplace.prev': 'Назад',
+  'findReplace.replaceAll': 'Заменить все',
+  'findReplace.noMatches': 'Совпадений нет',
+  'findReplace.indexOf': '{index} из {total}',
 };
 
 const dictionaries: Record<Locale, Strings> = { ru, en };

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { nextShapeId, useEditorStore } from '../../store/editorStore';
+import { useUiStore } from '../../store/uiStore';
 import type { Shape } from '../../model/shape';
 
 const clipboard: { shapes: Shape[] } = { shapes: [] };
@@ -40,6 +41,12 @@ function isEditableTarget(target: EventTarget | null): boolean {
 export function useGlobalKeymap(): void {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Find & replace works from anywhere — even while typing in a text field.
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        useUiStore.getState().setFindReplaceOpen(true);
+        return;
+      }
       if (isEditableTarget(e.target)) return;
       const state = useEditorStore.getState();
       const { slides, selectedSlideId, selectedShapeIds } = state;

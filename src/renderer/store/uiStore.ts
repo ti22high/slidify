@@ -8,6 +8,9 @@ interface UiStore {
   /** Whether the floating Animations panel is visible over the editor. */
   animationsPanel: boolean;
   setAnimationsPanel: (open: boolean) => void;
+  /** Whether the Find & replace panel is visible over the editor. */
+  findReplaceOpen: boolean;
+  setFindReplaceOpen: (open: boolean) => void;
 }
 
 export const useUiStore = createStore<UiStore>((set) => ({
@@ -16,4 +19,6 @@ export const useUiStore = createStore<UiStore>((set) => ({
   stopPresenting: () => set({ presenting: null }),
   animationsPanel: false,
   setAnimationsPanel: (open) => set({ animationsPanel: open }),
+  findReplaceOpen: false,
+  setFindReplaceOpen: (open) => set({ findReplaceOpen: open }),
 }));
