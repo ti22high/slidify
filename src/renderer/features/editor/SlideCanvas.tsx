@@ -13,6 +13,7 @@ import { resolveSlide } from '../slides/cascade';
 import { Table } from '../table/Table';
 import { registerBundledFonts } from '../text/fontLoader';
 import { useEditorStore } from '../../store/editorStore';
+import { collectGuideLines, combinedBbox, snapDelta, type SnapResult } from '../canvas/snapGuides';
 
 const BASE_WIDTH_PX = 960;
 /** Workspace padding around the slide so shapes can be dragged outside. */
@@ -32,6 +33,7 @@ export function SlideCanvas(): JSX.Element {
   const dispatch = useEditorStore((s) => s.dispatch);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [marquee, setMarquee] = useState<Rect | null>(null);
+  const [guides, setGuides] = useState<SnapResult['guides']>({ vertical: [], horizontal: [] });
 
   useEffect(() => {
     void registerBundledFonts();
@@ -106,26 +108,45 @@ export function SlideCanvas(): JSX.Element {
     // the drag set.
     const liveSelected = new Set(useEditorStore.getState().selectedShapeIds);
     if (!liveSelected.has(shapeId)) liveSelected.add(shapeId);
-    const startPositions = (slide?.shapes ?? [])
-      .filter((s) => liveSelected.has(s.id))
-      .map((s) => ({ id: s.id, x: s.x, y: s.y }));
+    const draggedStart = (slide?.shapes ?? []).filter((s) => liveSelected.has(s.id));
+    const startPositions = draggedStart.map((s) => ({
+      id: s.id,
+      x: s.x,
+      y: s.y,
+      w: s.w,
+      h: s.h,
+    }));
+    const startBbox = combinedBbox(draggedStart);
+    const others = (slide?.shapes ?? []).filter((s) => !liveSelected.has(s.id));
+    const guideLines = collectGuideLines(others, {
+      w: SLIDE_WIDTH_EMU,
+      h: SLIDE_HEIGHT_EMU,
+    });
+    // Snap threshold in EMU = ~6 screen pixels.
+    const SNAP_PX = 6;
+    const threshold = SNAP_PX * emuPerPixel;
 
     const move = (ev: PointerEvent) => {
       const cur = toSvgPoint(ev.clientX, ev.clientY);
-      const dx = cur.x - startSvg.x;
-      const dy = cur.y - startSvg.y;
+      const rawDx = cur.x - startSvg.x;
+      const rawDy = cur.y - startSvg.y;
+      const snap = ev.shiftKey
+        ? { delta: { x: rawDx, y: rawDy }, guides: { vertical: [], horizontal: [] } }
+        : snapDelta(startBbox, { x: rawDx, y: rawDy }, guideLines, threshold);
+      setGuides(snap.guides);
       for (const p of startPositions) {
         dispatch({
           type: 'shape/update',
           slideId: selectedSlideId,
           shapeId: p.id,
-          patch: { x: p.x + dx, y: p.y + dy },
+          patch: { x: p.x + snap.delta.x, y: p.y + snap.delta.y },
         });
       }
     };
     const up = () => {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
+      setGuides({ vertical: [], horizontal: [] });
     };
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
@@ -282,6 +303,33 @@ export function SlideCanvas(): JSX.Element {
             ),
           )}
           <Marquee rect={marquee} />
+          {/* Smart guides — drawn during drag when an edge / centre snaps. */}
+          {guides.vertical.map((x, i) => (
+            <line
+              key={`gv-${i}`}
+              x1={x}
+              y1={-WORKSPACE_MARGIN_EMU}
+              x2={x}
+              y2={WORKSPACE_HEIGHT_EMU - WORKSPACE_MARGIN_EMU}
+              stroke="#ec4899"
+              strokeWidth={emuPerPixel}
+              strokeDasharray={`${emuPerPixel * 4} ${emuPerPixel * 4}`}
+              pointerEvents="none"
+            />
+          ))}
+          {guides.horizontal.map((y, i) => (
+            <line
+              key={`gh-${i}`}
+              x1={-WORKSPACE_MARGIN_EMU}
+              y1={y}
+              x2={WORKSPACE_WIDTH_EMU - WORKSPACE_MARGIN_EMU}
+              y2={y}
+              stroke="#ec4899"
+              strokeWidth={emuPerPixel}
+              strokeDasharray={`${emuPerPixel * 4} ${emuPerPixel * 4}`}
+              pointerEvents="none"
+            />
+          ))}
         </svg>
         <EditOverlay
           shape={editingShape}

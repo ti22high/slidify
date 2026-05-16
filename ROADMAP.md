@@ -252,19 +252,19 @@ Google Slides:
 - Lock — НЕТ.
 - Ruler — НЕТ.
 
-| Что                                                                                 | Статус                                                      | Приоритет | Усилия                        |
-| ----------------------------------------------------------------------------------- | ----------------------------------------------------------- | --------- | ----------------------------- |
-| **Align**: 6 кнопок (left/center/right/top/middle/bottom) на selection или на slide | ✅ есть (Arrange → Align, dispatch arrange/align)           | —         | —                             |
-| **Distribute**: horizontal / vertical                                               | ✅ есть (Arrange → Distribute, dispatch arrange/distribute) | —         | —                             |
-| **Group / Ungroup** (Cmd+G / Cmd+Shift+G)                                           | ⛔ нет                                                      | **P0**    | 2 дня (модель group + render) |
-| Rotate 90° CW/CCW                                                                   | ✅ есть (Arrange → Rotate, dispatch arrange/rotateBy)       | —         | —                             |
-| Flip H/V                                                                            | ✅ есть (поля flipH/flipV в Shape, Arrange → Flip H/V)      | —         | —                             |
-| **Smart guides** (snap к границам / центрам других фигур) при drag                  | ⛔ нет                                                      | **P0**    | 2-3 дня                       |
-| Snap to grid (toggle)                                                               | ⛔ нет                                                      | P1        | 0.5 дня                       |
-| Snap to guides (user-defined guides)                                                | ⛔ нет                                                      | P2        | 1 день                        |
-| Lock shape position                                                                 | ⛔ нет                                                      | P1        | 1 день                        |
-| Ruler (top + left)                                                                  | ⛔ нет                                                      | P2        | 1 день                        |
-| Edit-handle for shape-specific geometry (e.g. rounded-rect corner radius drag)      | ⛔ нет                                                      | P2        | 1 день per-shape              |
+| Что                                                                                 | Статус                                                              | Приоритет | Усилия                        |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- | --------- | ----------------------------- |
+| **Align**: 6 кнопок (left/center/right/top/middle/bottom) на selection или на slide | ✅ есть (Arrange → Align, dispatch arrange/align)                   | —         | —                             |
+| **Distribute**: horizontal / vertical                                               | ✅ есть (Arrange → Distribute, dispatch arrange/distribute)         | —         | —                             |
+| **Group / Ungroup** (Cmd+G / Cmd+Shift+G)                                           | ⛔ нет                                                              | **P0**    | 2 дня (модель group + render) |
+| Rotate 90° CW/CCW                                                                   | ✅ есть (Arrange → Rotate, dispatch arrange/rotateBy)               | —         | —                             |
+| Flip H/V                                                                            | ✅ есть (поля flipH/flipV в Shape, Arrange → Flip H/V)              | —         | —                             |
+| **Smart guides** (snap к границам / центрам других фигур + слайд) при drag          | ✅ есть (snapGuides.ts + розовые pixel-снап линии; Shift отключает) | —         | —                             |
+| Snap to grid (toggle)                                                               | ⛔ нет                                                              | P1        | 0.5 дня                       |
+| Snap to guides (user-defined guides)                                                | ⛔ нет                                                              | P2        | 1 день                        |
+| Lock shape position                                                                 | ⛔ нет                                                              | P1        | 1 день                        |
+| Ruler (top + left)                                                                  | ⛔ нет                                                              | P2        | 1 день                        |
+| Edit-handle for shape-specific geometry (e.g. rounded-rect corner radius drag)      | ⛔ нет                                                              | P2        | 1 день per-shape              |
 
 ---
 
